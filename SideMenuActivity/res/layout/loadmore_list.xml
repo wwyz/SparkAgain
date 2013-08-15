@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <!-- We have to indicate that the listview is now a LoadMoreListView -->
+
+    <com.costum.android.widget.LoadMoreListView
+        android:id="@+id/android:list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+    
+         <include
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/fullscreen_loading_indicator"
+            android:visibility="gone" >
+        </include>
+
+        <include
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/retry"
+            android:visibility="gone" >
+        </include>
+    
+
+</FrameLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/about_preferences" >
+        <PreferenceScreen
+            android:summary="Help us make Dota2TV better"
+            android:title="Feedback" >
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="mailto:dota2tv1@gmail.com?subject=Dota2TV Feedback" >
+                <extra
+                    android:name="android.intent.extra.TEXT"
+                    android:value="" />
+            </intent>
+        </PreferenceScreen>
+
+        <com.examples.gg.Dialog_Libraries
+            android:summary="License details for open source software"
+            android:title="Open source licenses" />
+
+        <com.examples.gg.Dialog_Disclaimer
+            android:summary=""
+            android:title="Disclaimer" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
