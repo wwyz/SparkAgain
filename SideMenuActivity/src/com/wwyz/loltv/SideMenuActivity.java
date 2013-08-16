@@ -22,6 +22,17 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.wwyz.loltv.Adapters.EntryAdapter;
+import com.wwyz.loltv.Data.EntryItem;
+import com.wwyz.loltv.Data.Item;
+import com.wwyz.loltv.Data.SectionItem;
+import com.wwyz.loltv.LoadMore.LoadMore_H_Subscription;
+import com.wwyz.loltv.LoadMore.LoadMore_M_Subscription;
+import com.wwyz.loltv.LoadMore.LoadMore_News;
+import com.wwyz.loltv.LoadMore.LoadMore_Result;
+import com.wwyz.loltv.LoadMore.LoadMore_Twitch;
+import com.wwyz.loltv.LoadMore.LoadMore_UpcomingMatch;
+import com.wwyz.loltv.Setting.SettingsActivity;
 
 public class SideMenuActivity extends SherlockFragmentActivity {
 

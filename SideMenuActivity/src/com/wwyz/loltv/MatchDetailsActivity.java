@@ -38,6 +38,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.wwyz.loltv.Data.Match;
 
 public class MatchDetailsActivity extends SherlockListActivity {
 
