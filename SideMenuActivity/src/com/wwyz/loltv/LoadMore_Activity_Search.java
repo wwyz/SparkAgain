@@ -24,14 +24,14 @@ public class LoadMore_Activity_Search extends LoadMore_Activity_Base
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0, 20, 0, "Search")
-				.setIcon(R.drawable.abs__ic_search)
+				.setIcon(R.drawable.ic_search_inverse)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
 		menu.add(0, 0, 0, "Refresh")
-				.setIcon(R.drawable.refresh_inverse)
+				.setIcon(R.drawable.ic_refresh_inverse)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

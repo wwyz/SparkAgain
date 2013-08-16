@@ -66,7 +66,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.fresh_meat));
 
 		items.add(new SectionItem("Latest Videos"));
-		items.add(new EntryItem("Highlights", "Dota excitements",
+		items.add(new EntryItem("Highlights", "LoL excitements",
 				R.drawable.highlights));
 		items.add(new EntryItem("Matches", "You don't wanna miss it",
 				R.drawable.swords));
@@ -78,7 +78,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		items.add(new SectionItem("Match Table"));
 		items.add(new EntryItem("Upcomings", "Matches coming soon!",
 				R.drawable.upcoming));
-		items.add(new EntryItem("Recent Results", "It's in the bag!",
+		items.add(new EntryItem("Recent Results", "Check out the latest match results",
 				R.drawable.list_result));
 
 		// "About" section
@@ -245,7 +245,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
-			email.setData(Uri.parse("mailto:dota2tv1@gmail.com?subject=LoLTV Feedback"));
+			email.setData(Uri.parse("mailto:my.loltv1@gmail.com?subject=LoLTV Feedback"));
 			startActivity(Intent.createChooser(email, "Send feedback via.."));
 //			startActivity(email);
 			break;
@@ -256,7 +256,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			sendIntent.setAction(Intent.ACTION_SEND);
 			sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.examples.gg");
 			sendIntent.setType("text/plain");
-			startActivity(Intent.createChooser(sendIntent, "Share LoLTV to.."));
+			startActivity(Intent.createChooser(sendIntent, "Share LoLTV via.."));
 //			startActivity(sendIntent);
 			break;
 			

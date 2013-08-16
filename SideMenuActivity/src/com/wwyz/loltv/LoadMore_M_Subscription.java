@@ -9,7 +9,7 @@ public class LoadMore_M_Subscription extends LoadMore_Base {
 		abTitle = "Matches";
 
 		// Give API URLs
-		API.add("https://gdata.youtube.com/feeds/api/users/GJoABYYxwoGsl6TuP0DGnw/newsubscriptionvideos?max-results=10&alt=json");
+		API.add("https://gdata.youtube.com/feeds/api/users/15yOeOcyVOFKNSbzzLLiDQ/newsubscriptionvideos?max-results=10&alt=json");
 		
 			
 

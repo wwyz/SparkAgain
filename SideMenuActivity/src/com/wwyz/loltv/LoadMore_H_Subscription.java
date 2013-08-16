@@ -9,7 +9,7 @@ public class LoadMore_H_Subscription extends LoadMore_Base {
 		abTitle = "Highlights";
 
 		// Give API URLs
-		API.add("https://gdata.youtube.com/feeds/api/users/WK3QT_GLR3y_lSNYSRkMHw/newsubscriptionvideos?max-results=10&alt=json");
+		API.add("https://gdata.youtube.com/feeds/api/users/sHTNJQKArTqXOFdFcEz3wQ/newsubscriptionvideos?max-results=10&alt=json");
 
 		// initialize the fragments in the Menu
 		FragmentAll = new LoadMore_H_Subscription();

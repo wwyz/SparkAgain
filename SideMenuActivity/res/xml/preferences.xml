@@ -3,11 +3,11 @@
 
     <PreferenceCategory android:title="@string/about_preferences" >
         <PreferenceScreen
-            android:summary="Help us make Dota2TV better"
+            android:summary="Help us make LoLTV better"
             android:title="Feedback" >
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="mailto:dota2tv1@gmail.com?subject=Dota2TV Feedback" >
+                android:data="mailto:my.loltv1@gmail.com?subject=LoLTV Feedback" >
                 <extra
                     android:name="android.intent.extra.TEXT"
                     android:value="" />

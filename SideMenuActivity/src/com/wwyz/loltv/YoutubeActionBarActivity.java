@@ -129,9 +129,9 @@ public class YoutubeActionBarActivity extends SherlockFragmentActivity implement
 //        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         shareIntent.setAction(Intent.ACTION_SEND);
         if (isFullscreenMode){
-        	shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.youtube.com/watch?v="+videoId+" via @Dota2TV1");
+        	shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.youtube.com/watch?v="+videoId+" via @LoLTV");
         }else{
-        	shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.youtube.com/watch?v="+video.getVideoId()+" via @Dota2TV1");
+        	shareIntent.putExtra(Intent.EXTRA_TEXT, "http://www.youtube.com/watch?v="+video.getVideoId()+" via @LoLTV");
         }
         shareIntent.setType("text/plain");
         return shareIntent;

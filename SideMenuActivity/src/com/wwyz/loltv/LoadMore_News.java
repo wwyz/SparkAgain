@@ -348,7 +348,7 @@ public class LoadMore_News extends LoadMore_Base implements
 				}
 			});
 
-			handler.postDelayed(runnable, 5000);
+			handler.postDelayed(runnable, 10000);
 
 			// myThread = new Thread(new Runnable() {
 			//
@@ -392,7 +392,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			}
 			advPager.setCurrentItem(position, true);
 			// refreshFragment();
-			handler.postDelayed(runnable, 5000);
+			handler.postDelayed(runnable, 10000);
 		}
 	};
 

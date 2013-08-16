@@ -99,7 +99,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		menu.add(0, 0, 0, "Refresh")
-				.setIcon(R.drawable.refresh_inverse)
+				.setIcon(R.drawable.ic_refresh_inverse)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
@@ -131,15 +131,14 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			shareIntent.putExtra(Intent.EXTRA_TEXT,
 					match.getTeamName1() + " vs " + match.getTeamName2()
 							+ " will start " + match.getTime()
-							+ " later shared via @Dota2TV1");
+							+ " later");
 		} else if (match.getMatchStatus() == Match.LIVE) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, match.getTeamName1()
 					+ " vs " + match.getTeamName2()
-					+ " is live now shared via @Dota2TV1");
+					+ " is live now");
 		} else if (match.getMatchStatus() == Match.ENDED){
 			shareIntent.putExtra(Intent.EXTRA_TEXT, match.getTeamName1() + " "
-					+ match.getScore() + " " + match.getTeamName2()
-					+ "shared via @Dota2TV1");
+					+ match.getScore() + " " + match.getTeamName2());
 
 		}
 		shareIntent.setType("text/plain");

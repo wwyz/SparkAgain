@@ -58,7 +58,7 @@ public class Dialog_Disclaimer extends DialogPreference{
     		    		
     		TextView license = (TextView) view.findViewById(R.id.apache_license);
     		license.setText(Html.fromHtml(
-    	            "<p>The copyright of all Dota 2 wallpapers and icon are owned by Valve Corporation.</p>" + 
+    	            "<p>The copyright of all League of Legends wallpapers and icons are owned by Riot Games.</p>" + 
     				"<p>All the videos and match information are collected from Internet autonomously by programs. We only provide the links to other media. "+
     	            "This application does not generate any media contents.</p>" + 
             		"<p>If there are any contents that violate your rights, please contact us.</p>"));
