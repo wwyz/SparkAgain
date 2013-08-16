@@ -19,10 +19,10 @@ SearchView.OnQueryTextListener {
 	@Override
 	public void Initializing() {
 		// Give a title for the action bar
-		abTitle = "Twitch Dota2 Streams";
+		abTitle = "Twitch LoL Streams";
 
 		// Give API URLs
-		API.add("https://api.twitch.tv/kraken/streams?game=Dota+2&limit=10");
+		API.add("https://api.twitch.tv/kraken/streams?game=League%20of%20Legends&limit=10");
 
 		// set a feed manager
 		feedManager = new FeedManager_Twitch();
@@ -43,14 +43,14 @@ SearchView.OnQueryTextListener {
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0,20,0,"Search")
-				.setIcon(R.drawable.abs__ic_search)
+				.setIcon(R.drawable.ic_search_inverse)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
 		menu.add(0,0,0,"Refresh")
-				.setIcon(R.drawable.ic_refresh)
+				.setIcon(R.drawable.refresh_inverse)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

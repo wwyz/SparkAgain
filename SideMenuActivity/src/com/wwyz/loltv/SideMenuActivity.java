@@ -87,7 +87,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.feedback));
 		
 		items.add(new EntryItem("Share", "Share our app", R.drawable.ic_action_social_share));
-		items.add(new EntryItem("Rate Dota2TV", "Like it?", R.drawable.ic_action_rating_good));
+		items.add(new EntryItem("Rate LoLTV", "Like it?", R.drawable.ic_action_rating_good));
 		
 		
 		eAdapter = new EntryAdapter(this, items);
@@ -245,7 +245,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
-			email.setData(Uri.parse("mailto:dota2tv1@gmail.com?subject=Dota2TV Feedback"));
+			email.setData(Uri.parse("mailto:dota2tv1@gmail.com?subject=LoLTV Feedback"));
 			startActivity(Intent.createChooser(email, "Send feedback via.."));
 //			startActivity(email);
 			break;
@@ -256,7 +256,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			sendIntent.setAction(Intent.ACTION_SEND);
 			sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.examples.gg");
 			sendIntent.setType("text/plain");
-			startActivity(Intent.createChooser(sendIntent, "Share Dota2TV to.."));
+			startActivity(Intent.createChooser(sendIntent, "Share LoLTV to.."));
 //			startActivity(sendIntent);
 			break;
 			

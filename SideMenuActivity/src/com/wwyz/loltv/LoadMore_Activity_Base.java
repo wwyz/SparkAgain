@@ -213,7 +213,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		menu.add(0, 0, 0, "Refresh")
-				.setIcon(R.drawable.ic_refresh)
+				.setIcon(R.drawable.ic_refresh_inverse)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

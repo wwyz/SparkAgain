@@ -35,7 +35,7 @@ public class LoadMore_Result extends LoadMore_Base {
 		abTitle = "Recent Results";
 
 		// Give API URLs
-		API.add("http://www.gosugamers.net/dota2/gosubet");
+		API.add("http://www.gosugamers.net/lol/gosubet");
 
 		pageNum = 1;
 
@@ -189,7 +189,7 @@ public class LoadMore_Result extends LoadMore_Base {
 						} else {
 							isMoreVideos = true;
 							pageNum++;
-							API.add("http://www.gosugamers.net/dota2/gosubet?r-page="
+							API.add("http://www.gosugamers.net/lol/gosubet?r-page="
 									+ pageNum);
 						}
 					}

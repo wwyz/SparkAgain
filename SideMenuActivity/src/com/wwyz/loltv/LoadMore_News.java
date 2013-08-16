@@ -64,7 +64,7 @@ public class LoadMore_News extends LoadMore_Base implements
 	private View pagerRetry;
 	private View listLoading;
 	private View listRetry;
-	private String url = "http://www.gosugamers.net/dota2/gosubet";
+	private String url = "http://www.gosugamers.net/lol/gosubet";
 	private int rand_1;
 	private int rand_2;
 	private AdvAdapter myAdvAdapter;
@@ -76,12 +76,14 @@ public class LoadMore_News extends LoadMore_Base implements
 	private Random random;
 
 	private SideMenuActivity sma;
-	private final int[] myDrawables = new int[] { R.drawable.bountyhunter,
-			R.drawable.centaurwarlord, R.drawable.disruptor, R.drawable.dusa,
-			R.drawable.invoker, R.drawable.jugg, R.drawable.pa,
-			R.drawable.pudge, R.drawable.radient, R.drawable.razor,
-			R.drawable.rubick, R.drawable.slardar, R.drawable.snk,
-			R.drawable.tiny, R.drawable.visage, R.drawable.faceless };
+	private final int[] myDrawables = new int[] { R.drawable.lol1,
+			R.drawable.lol2, R.drawable.lol3, R.drawable.lol4,
+			R.drawable.lol5, R.drawable.lol6, R.drawable.lol7,
+			R.drawable.lol8, R.drawable.lol9, R.drawable.lol10,
+			R.drawable.lol11, R.drawable.lol12, R.drawable.lol13,
+			R.drawable.lol14, R.drawable.lol15, R.drawable.lol16,
+			R.drawable.lol17, R.drawable.lol18, R.drawable.lol19,
+			R.drawable.lol20, R.drawable.lol21 };
 
 	private List<View> views = new ArrayList<View>();
 
@@ -96,7 +98,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		abTitle = "What's New";
 
 		// Give API URLs
-		API.add("https://gdata.youtube.com/feeds/api/users/cpGJHANGum7tFm0kg6fh7g/newsubscriptionvideos?max-results=10&alt=json");
+		API.add("https://gdata.youtube.com/feeds/api/users/ybJ_SpdJsJB5Ug8ibG6jWw/newsubscriptionvideos?max-results=10&alt=json");
 
 		// set a feed manager
 		feedManager = new FeedManager_Subscription();
@@ -134,14 +136,14 @@ public class LoadMore_News extends LoadMore_Base implements
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0,20,0,"Search")
-				.setIcon(R.drawable.abs__ic_search)
+				.setIcon(R.drawable.ic_search_inverse)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
 		menu.add(0,0,0,"Refresh")
-				.setIcon(R.drawable.ic_refresh)
+				.setIcon(R.drawable.ic_refresh_inverse)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

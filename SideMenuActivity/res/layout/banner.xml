@@ -9,5 +9,6 @@
                            android:layout_height="wrap_content"
                            ads:adSize="BANNER"
                            ads:adUnitId="ca-app-pub-6718707824713684/9583271057"
+                           ads:testDevices="AA30D28B77588935E3648795EBD49632"
                            ads:loadAdOnCreate="true"/>
 </LinearLayout>

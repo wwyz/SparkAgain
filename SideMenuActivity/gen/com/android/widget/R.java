@@ -14,9 +14,9 @@ public final class R {
 		public static final int gray_2 = 0x7f050001;
 	}
 	public static final class drawable {
-		public static final int costum_progress_bar = 0x7f020075;
-		public static final int ic_launcher = 0x7f020088;
-		public static final int ic_pulltorefresh_arrow = 0x7f020089;
+		public static final int costum_progress_bar = 0x7f020073;
+		public static final int ic_launcher = 0x7f020083;
+		public static final int ic_pulltorefresh_arrow = 0x7f020084;
 	}
 	public static final class id {
 		public static final int load_more_footer = 0x7f070050;

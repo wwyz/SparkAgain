@@ -14,11 +14,11 @@
             </intent>
         </PreferenceScreen>
 
-        <com.examples.gg.Dialog_Libraries
+        <com.wwyz.loltv.Dialog_Libraries
             android:summary="License details for open source software"
             android:title="Open source licenses" />
 
-        <com.examples.gg.Dialog_Disclaimer
+        <com.wwyz.loltv.Dialog_Disclaimer
             android:summary=""
             android:title="Disclaimer" />
     </PreferenceCategory>

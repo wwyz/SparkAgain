@@ -36,7 +36,7 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 		abTitle = "Upcoming Matches";
 
 		// Give API URLs
-		API.add("http://www.gosugamers.net/dota2/gosubet");
+		API.add("http://www.gosugamers.net/lol/gosubet");
 
 		pageNum = 1;
 
@@ -198,7 +198,7 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 						} else {
 							isMoreVideos = true;
 							pageNum++;
-							API.add("http://www.gosugamers.net/dota2/gosubet?u-page="
+							API.add("http://www.gosugamers.net/lol/gosubet?u-page="
 									+ pageNum);
 						}
 					}
