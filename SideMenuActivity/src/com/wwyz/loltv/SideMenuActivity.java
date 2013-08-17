@@ -22,17 +22,17 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.wwyz.loltv.Adapters.EntryAdapter;
-import com.wwyz.loltv.Data.EntryItem;
-import com.wwyz.loltv.Data.Item;
-import com.wwyz.loltv.Data.SectionItem;
-import com.wwyz.loltv.LoadMore.LoadMore_H_Subscription;
-import com.wwyz.loltv.LoadMore.LoadMore_M_Subscription;
-import com.wwyz.loltv.LoadMore.LoadMore_News;
-import com.wwyz.loltv.LoadMore.LoadMore_Result;
-import com.wwyz.loltv.LoadMore.LoadMore_Twitch;
-import com.wwyz.loltv.LoadMore.LoadMore_UpcomingMatch;
-import com.wwyz.loltv.Setting.SettingsActivity;
+import com.wwyz.loltv.adapters.EntryAdapter;
+import com.wwyz.loltv.data.EntryItem;
+import com.wwyz.loltv.data.Item;
+import com.wwyz.loltv.data.SectionItem;
+import com.wwyz.loltv.loadMore.LoadMore_H_Subscription;
+import com.wwyz.loltv.loadMore.LoadMore_M_Subscription;
+import com.wwyz.loltv.loadMore.LoadMore_News;
+import com.wwyz.loltv.loadMore.LoadMore_Result;
+import com.wwyz.loltv.loadMore.LoadMore_Twitch;
+import com.wwyz.loltv.loadMore.LoadMore_UpcomingMatch;
+import com.wwyz.loltv.setting.SettingsActivity;
 
 public class SideMenuActivity extends SherlockFragmentActivity {
 
@@ -89,7 +89,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		items.add(new SectionItem("Match Table"));
 		items.add(new EntryItem("Upcomings", "Matches coming soon!",
 				R.drawable.upcoming));
-		items.add(new EntryItem("Recent Results", "Check out the latest match results",
+		items.add(new EntryItem("Recent Results", "Latest match results",
 				R.drawable.list_result));
 
 		// "About" section

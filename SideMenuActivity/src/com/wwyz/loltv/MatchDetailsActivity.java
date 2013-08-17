@@ -38,7 +38,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
-import com.wwyz.loltv.Data.Match;
+import com.wwyz.loltv.data.Match;
 
 public class MatchDetailsActivity extends SherlockListActivity {
 
@@ -408,7 +408,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 		// Destroy current activity
 		finish();
 
-		Toast.makeText(mActivity, "Refreshing", Toast.LENGTH_SHORT).show();
+//		Toast.makeText(mActivity, "Refreshing", Toast.LENGTH_SHORT).show();
 
 		// Start a new activity
 		Intent i = new Intent(mActivity, MatchDetailsActivity.class);

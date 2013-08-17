@@ -13,15 +13,8 @@
         android:layout_gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?android:attr/progressBarStyleSmall"
+        style="?android:attr/progressBarStyleLarge"
         >
     </ProgressBar>
-    <TextView
-        android:id="@+id/current_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5.0dip"
-        android:text="@string/loading"
-        >
-    </TextView>
+
 </LinearLayout>

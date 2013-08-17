@@ -3,6 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
+    <ImageView 
+        android:id="@+id/bgi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+           />
+    
     <TextView
         android:id="@+id/livetitle"
         android:layout_width="wrap_content"

@@ -25,7 +25,7 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayer.OnFullscreenListener;
 import com.google.android.youtube.player.YouTubePlayer.Provider;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.wwyz.loltv.Data.Video;
+import com.wwyz.loltv.data.Video;
 
 public class YoutubeActionBarActivity extends SherlockFragmentActivity implements YouTubePlayer.OnInitializedListener {
 
