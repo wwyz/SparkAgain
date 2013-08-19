@@ -36,7 +36,8 @@
             android:layout_height="fill_parent"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp" 
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/live1"
@@ -63,7 +64,8 @@
             android:layout_height="fill_parent"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp" 
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/live2"
@@ -90,7 +92,8 @@
             android:layout_height="fill_parent"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp" 
+            android:maxLines="1"/>
 
         <TextView
             android:id="@+id/live3"

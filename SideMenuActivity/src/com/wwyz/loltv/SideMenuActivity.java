@@ -26,6 +26,7 @@ import com.wwyz.loltv.adapters.EntryAdapter;
 import com.wwyz.loltv.data.EntryItem;
 import com.wwyz.loltv.data.Item;
 import com.wwyz.loltv.data.SectionItem;
+import com.wwyz.loltv.loadMore.LoadMore_Gosu_News;
 import com.wwyz.loltv.loadMore.LoadMore_H_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_M_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_News;
@@ -74,6 +75,9 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		// mMenuAdapter = new MenuListAdapter(this, title, subtitle, icon);
 		items.add(new SectionItem("Everyday's Feed"));
 		items.add(new EntryItem("What's new", "Fresh meat!",
+				R.drawable.fresh_meat));
+		
+		items.add(new EntryItem("Gosu News", "Latest news from gosugamers",
 				R.drawable.fresh_meat));
 
 		items.add(new SectionItem("Latest Videos"));
@@ -226,33 +230,38 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			// News
 			ft.replace(R.id.content_frame, new LoadMore_News());
 			break;
+			
+		case 2:
+			// Gosu news
+			ft.replace(R.id.content_frame, new LoadMore_Gosu_News());
+			break;
 
-		case 3:
+		case 4:
 			// Highlight section
 			ft.replace(R.id.content_frame, new LoadMore_H_Subscription());
 			break;
 
-		case 4:
+		case 5:
 			// Match section
 			ft.replace(R.id.content_frame, new LoadMore_M_Subscription());
 			break;
 
-		case 6:
+		case 7:
 			// Twitch section
 			ft.replace(R.id.content_frame, new LoadMore_Twitch());
 			break;
 
-		case 8:
+		case 9:
 			// upcoming section
 			ft.replace(R.id.content_frame, new LoadMore_UpcomingMatch());
 			break;
 
-		case 9:
+		case 10:
 			// result section
 			ft.replace(R.id.content_frame, new LoadMore_Result());
 			break;
 			
-		case 11:
+		case 12:
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
@@ -261,24 +270,24 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 //			startActivity(email);
 			break;
 			
-		case 12:
+		case 13:
 			// Share Dota2TV
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.examples.gg");
+			sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.wwyz.loltv");
 			sendIntent.setType("text/plain");
 			startActivity(Intent.createChooser(sendIntent, "Share LoLTV via.."));
 //			startActivity(sendIntent);
 			break;
 			
-		case 13:
+		case 14:
 			// Rate Dota2TV
 		    Intent rateIntent = new Intent(Intent.ACTION_VIEW);
 		    //Try Google play
-		    rateIntent.setData(Uri.parse("market://details?id=com.examples.gg"));
+		    rateIntent.setData(Uri.parse("market://details?id=com.wwyz.loltv"));
 		    if (tryStartActivity(rateIntent) == false) {
 		        //Market (Google play) app seems not installed, let's try to open a webbrowser
-		        rateIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.examples.gg"));
+		        rateIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.wwyz.loltv"));
 		        if (tryStartActivity(rateIntent) == false) {
 		            //Well if this also fails, we have run out of options, inform the user.
 		            Toast.makeText(this, "Could not open Google Play, please install Google Play.", Toast.LENGTH_SHORT).show();

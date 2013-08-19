@@ -48,14 +48,14 @@ SearchView.OnQueryTextListener {
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0,20,0,"Search")
-				.setIcon(R.drawable.ic_search_inverse)
+				.setIcon(R.drawable.ic_search)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 
 		menu.add(0,0,0,"Refresh")
-				.setIcon(R.drawable.ic_refresh_inverse)
+				.setIcon(R.drawable.ic_refresh)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
 								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

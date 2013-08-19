@@ -243,7 +243,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 
 		if (hasRefresh)
 			menu.add(0, 0, 0, "Refresh")
-					.setIcon(R.drawable.ic_refresh_inverse)
+					.setIcon(R.drawable.ic_refresh)
 					.setShowAsAction(
 							MenuItem.SHOW_AS_ACTION_IF_ROOM
 									| MenuItem.SHOW_AS_ACTION_WITH_TEXT);

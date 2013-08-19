@@ -8,8 +8,7 @@
 
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="160dp"
-         >
+        android:layout_height="160dp" >
 
         <RelativeLayout
             android:id="@+id/pageContent"
