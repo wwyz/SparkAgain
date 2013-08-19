@@ -3,14 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <ImageView 
-        android:id="@+id/bgi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-           />
-    
     <TextView
         android:id="@+id/livetitle"
         android:layout_width="wrap_content"
@@ -34,10 +26,10 @@
             android:id="@+id/lineup1"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:maxLines="1"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" 
-            android:maxLines="1"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/live1"
@@ -62,10 +54,10 @@
             android:id="@+id/lineup2"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:maxLines="1"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" 
-            android:maxLines="1"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/live2"
@@ -90,10 +82,10 @@
             android:id="@+id/lineup3"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:maxLines="1"
             android:text="AAA vs BBB "
             android:textColor="@android:color/white"
-            android:textSize="18sp" 
-            android:maxLines="1"/>
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/live3"
@@ -109,7 +101,7 @@
         android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/livetitle"
+        android:layout_alignLeft="@+id/livetitle"
         android:layout_below="@+id/livetitle"
         android:text="(Press to view more)"
         android:textColor="@color/silver"

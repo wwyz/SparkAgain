@@ -19,7 +19,6 @@ import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.wwyz.loltv.MatchDetailsActivity;
 import com.wwyz.loltv.R;
-import com.wwyz.loltv.R.id;
 import com.wwyz.loltv.adapters.MatchArrayAdapter;
 import com.wwyz.loltv.data.Match;
 
@@ -170,94 +169,101 @@ public class LoadMore_Result extends LoadMore_Base {
 		}
 
 		@Override
+		public String doInBackground(String... uri) {
+
+			super.doInBackground(uri[0]);
+
+			if (!taskCancel && responseString != null) {
+				pullResults(responseString);
+			} else {
+				handleCancelView();
+			}
+			// pullNews();
+			return responseString;
+		}
+
+		private void pullResults(String responseString) {
+			Document doc = Jsoup.parse(responseString);
+
+			Element box = null;
+			box = doc.select("div.box").get(2);
+
+			if (box != null) {
+				links = box.select("tr:has(td.opp)");
+
+				Element paginator = box.select("div.paginator").first();
+
+				if (paginator == null) {
+					isMoreVideos = false;
+				} else {
+					if (paginator.select("a").last().hasAttr("class")) {
+						isMoreVideos = false;
+					} else {
+						isMoreVideos = true;
+						pageNum++;
+						API.add("http://www.gosugamers.net/lol/gosubet?r-page="
+								+ pageNum);
+					}
+				}
+
+				// Setting layout
+
+				for (Element link : links) {
+
+					Match newMatch = new Match();
+					Element opp_1 = link.select("td.opp").first();
+					Element opp_2 = link.select("td.opp").get(1);
+
+					newMatch.setTeamName1(opp_1.select("span").first().text()
+							.trim());
+					newMatch.setTeamName2(opp_2.select("span").first().text()
+							.trim());
+
+					newMatch.setTeamIcon1(baseUrl
+							+ opp_1.select("img").attr("src"));
+					newMatch.setTeamIcon2(baseUrl
+							+ opp_2.select("img").attr("src"));
+
+					newMatch.setScore(link.select("span.hidden").first().text()
+							.trim());
+
+					newMatch.setGosuLink(baseUrl
+							+ opp_1.select("a[href]").attr("href"));
+
+					newMatch.setMatchStatus(Match.ENDED);
+
+					matchArray.add(newMatch);
+
+				}
+
+			} else {
+				handleCancelView();
+			}
+
+		}
+
+		@Override
 		protected void onPostExecute(String result) {
 
 			// Log.d("AsyncDebug", "Into onPostExecute!");
 
 			if (!taskCancel && result != null) {
 
-				Document doc = Jsoup.parse(result);
+				mArrayAdatper.notifyDataSetChanged();
 
-				Element box = null;
-				box = doc.select("div.box").get(2);
+				// Call onLoadMoreComplete when the LoadMore task has
+				// finished
+				((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
 
-				if (box != null) {
-					links = box.select("tr:has(td.opp)");
+				// loading done
+				DisplayView(contentView, retryView, loadingView);
 
-					Element paginator = box.select("div.paginator").first();
+				if (!isMoreVideos) {
+					((LoadMoreListView) myLoadMoreListView).onNoMoreItems();
 
-					if (paginator == null) {
-						isMoreVideos = false;
-					} else {
-						if (paginator.select("a").last().hasAttr("class")) {
-							isMoreVideos = false;
-						} else {
-							isMoreVideos = true;
-							pageNum++;
-							API.add("http://www.gosugamers.net/lol/gosubet?r-page="
-									+ pageNum);
-						}
-					}
-
-					// Setting layout
-
-					for (Element link : links) {
-
-						Match newMatch = new Match();
-						Element opp_1 = link.select("td.opp").first();
-						Element opp_2 = link.select("td.opp").get(1);
-
-						newMatch.setTeamName1(opp_1.select("span").first()
-								.text().trim());
-						newMatch.setTeamName2(opp_2.select("span").first()
-								.text().trim());
-
-						newMatch.setTeamIcon1(baseUrl
-								+ opp_1.select("img").attr("src"));
-						newMatch.setTeamIcon2(baseUrl
-								+ opp_2.select("img").attr("src"));
-
-						// if
-						// (link.getElementsByClass("results").isEmpty()){
-						newMatch.setScore(link.select("span.hidden").first()
-								.text().trim());
-						// }else{
-						// newMatch.setTime(link.select("span.hidden").first().text().trim());
-						//
-						// }
-
-						newMatch.setGosuLink(baseUrl
-								+ opp_1.select("a[href]").attr("href"));
-
-						newMatch.setMatchStatus(Match.ENDED);
-
-						matchArray.add(newMatch);
-
-					}
-
-					// for (Match m : matchArray) {
-					// System.out.println(m.getTeamName1());
-					// }
-
-					mArrayAdatper.notifyDataSetChanged();
-
-					// Call onLoadMoreComplete when the LoadMore task has
-					// finished
-					((LoadMoreListView) myLoadMoreListView)
-							.onLoadMoreComplete();
-
-					// loading done
-					DisplayView(contentView, retryView, loadingView);
-
-					if (!isMoreVideos) {
-						((LoadMoreListView) myLoadMoreListView).onNoMoreItems();
-
-						myLoadMoreListView.setOnLoadMoreListener(null);
-					}
-
-				} else {
-					handleCancelView();
+					myLoadMoreListView.setOnLoadMoreListener(null);
 				}
+
 			} else {
 
 				handleCancelView();

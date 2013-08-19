@@ -77,7 +77,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		items.add(new EntryItem("What's new", "Fresh meat!",
 				R.drawable.fresh_meat));
 		
-		items.add(new EntryItem("Gosu News", "Latest news from gosugamers",
+		items.add(new EntryItem("Latest News", "From gosugamers.net",
 				R.drawable.fresh_meat));
 
 		items.add(new SectionItem("Latest Videos"));

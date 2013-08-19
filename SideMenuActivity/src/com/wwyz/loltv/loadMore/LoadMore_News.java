@@ -1,11 +1,11 @@
 package com.wwyz.loltv.loadMore;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
+//import org.json.JSONException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Handler;
+//import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
@@ -33,6 +34,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -42,10 +44,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.wwyz.loltv.MyAsyncTask;
 import com.wwyz.loltv.R;
 import com.wwyz.loltv.SideMenuActivity;
-import com.wwyz.loltv.data.News;
 import com.wwyz.loltv.feedManager.FeedManager_Subscription;
-//import org.json.JSONException;
-//import android.os.Message;
 
 @SuppressLint("HandlerLeak")
 public class LoadMore_News extends LoadMore_Base implements
@@ -72,7 +71,6 @@ public class LoadMore_News extends LoadMore_Base implements
 	private String url = "http://www.gosugamers.net/lol/gosubet";
 	private int rand_1;
 	private int rand_2;
-	private int rand_3;
 	private AdvAdapter myAdvAdapter;
 
 	private int position = 0;
@@ -91,8 +89,6 @@ public class LoadMore_News extends LoadMore_Base implements
 			R.drawable.lol19, R.drawable.lol20, R.drawable.lol21 };
 
 	private List<View> views = new ArrayList<View>();
-	private ArrayList<News> mNews = new ArrayList<News>();
-
 
 	// private Thread myThread;
 
@@ -177,72 +173,19 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		View v1 = new View(sfa);
 		View v2 = new View(sfa);
-		View v3 = new View(sfa);
 		final LayoutInflater inflater = (LayoutInflater) sfa
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		// Add view 3
-
-		v3 = inflater.inflate(R.layout.livetext, null, false);
-		v3.setBackgroundResource(myDrawables[rand_3]);
-
-		TextView liveTitle = (TextView) v3.findViewById(R.id.livetitle);
-		TextView liveMatch1 = (TextView) v3.findViewById(R.id.lineup1);
-		TextView liveMatch2 = (TextView) v3.findViewById(R.id.lineup2);
-		TextView liveMatch3 = (TextView) v3.findViewById(R.id.lineup3);
-		TextView live1 = (TextView) v3.findViewById(R.id.live1);
-		TextView live2 = (TextView) v3.findViewById(R.id.live2);
-		TextView live3 = (TextView) v3.findViewById(R.id.live3);
-
-		liveTitle.setText("Latest News");
-
-		if (resultarray.length >= 1) {
-			liveMatch1.setText(mNews.get(0).getTitle());
-		} else {
-			liveMatch1.setVisibility(View.GONE);
-		}
-		live1.setVisibility(View.GONE);
-
-		if (resultarray.length >= 2) {
-			liveMatch2.setText(mNews.get(1).getTitle());
-		} else {
-			liveMatch2.setVisibility(View.GONE);
-		}
-		live2.setVisibility(View.GONE);
-
-		if (resultarray.length >= 3) {
-			liveMatch3.setText(mNews.get(2).getTitle());
-		} else {
-			liveMatch3.setVisibility(View.GONE);
-		}
-		live3.setVisibility(View.GONE);
-
-		v3.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				sma.setDrawerIndicator(2);
-
-				FragmentTransaction ft = getFragmentManager()
-						.beginTransaction();
-				ft.replace(R.id.content_frame, new LoadMore_Gosu_News());
-				ft.commit();
-			}
-		});
-
-		views.add(v3);
-
-		// View Upcoming
 		v1 = inflater.inflate(R.layout.livetext, null, false);
 		v1.setBackgroundResource(myDrawables[rand_1]);
 
-		liveTitle = (TextView) v1.findViewById(R.id.livetitle);
-		liveMatch1 = (TextView) v1.findViewById(R.id.lineup1);
-		liveMatch2 = (TextView) v1.findViewById(R.id.lineup2);
-		liveMatch3 = (TextView) v1.findViewById(R.id.lineup3);
-		live1 = (TextView) v1.findViewById(R.id.live1);
-		live2 = (TextView) v1.findViewById(R.id.live2);
-		live3 = (TextView) v1.findViewById(R.id.live3);
+		TextView liveTitle = (TextView) v1.findViewById(R.id.livetitle);
+		TextView liveMatch1 = (TextView) v1.findViewById(R.id.lineup1);
+		TextView liveMatch2 = (TextView) v1.findViewById(R.id.lineup2);
+		TextView liveMatch3 = (TextView) v1.findViewById(R.id.lineup3);
+		TextView live1 = (TextView) v1.findViewById(R.id.live1);
+		TextView live2 = (TextView) v1.findViewById(R.id.live2);
+		TextView live3 = (TextView) v1.findViewById(R.id.live3);
 
 		liveTitle.setText("Upcoming Matches");
 
@@ -362,10 +305,6 @@ public class LoadMore_News extends LoadMore_Base implements
 			rand_2 = random.nextInt(myDrawables.length - 1);
 		} while (rand_1 == rand_2);
 
-		do {
-			rand_3 = random.nextInt(myDrawables.length - 1);
-		} while (rand_1 == rand_3 || rand_3 == rand_2);
-
 		if (!isPagerSet) {
 			advPager = (ViewPager) sfa.findViewById(R.id.adv_pager);
 			group = (ViewGroup) sfa.findViewById(R.id.viewGroup);
@@ -433,7 +372,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			isPagerSet = true;
 		}
 
-		myAdvAdapter = new AdvAdapter(views);
+		myAdvAdapter = new AdvAdapter();
 
 		advPager.setAdapter(myAdvAdapter);
 
@@ -443,7 +382,6 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		imageViews[0].setBackgroundResource(R.drawable.d2_selected);
 		imageViews[1].setBackgroundResource(R.drawable.d2_unselected);
-		imageViews[2].setBackgroundResource(R.drawable.d2_unselected);
 
 	}
 
@@ -452,16 +390,12 @@ public class LoadMore_News extends LoadMore_Base implements
 		public void run() {
 			if (position == 0) {
 				position = 1;
-			} else if (position == 1) {
-				position = 2;
-			} else if (position == 2) {
-				position = 0;
 			} else {
 				position = 0;
 			}
 			advPager.setCurrentItem(position, true);
 			// refreshFragment();
-			handler.postDelayed(runnable, 5000);
+			handler.postDelayed(runnable, 10000);
 		}
 	};
 
@@ -501,7 +435,6 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		@Override
 		public void onPageSelected(int arg0) {
-			position = arg0;
 			what.getAndSet(arg0);
 			for (int i = 0; i < imageViews.length; i++) {
 				imageViews[arg0].setBackgroundResource(R.drawable.d2_selected);
@@ -516,10 +449,10 @@ public class LoadMore_News extends LoadMore_Base implements
 	}
 
 	private final class AdvAdapter extends PagerAdapter {
-		private List<View> views = null;
+		// private List<View> views = null;
 
-		public AdvAdapter(List<View> vs) {
-			this.views = vs;
+		public AdvAdapter() {
+			// this.views = views;
 		}
 
 		@Override
@@ -536,14 +469,14 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		@Override
 		public int getCount() {
-			return this.views.size();
+			return views.size();
 		}
 
 		@Override
 		public Object instantiateItem(ViewGroup collection, int position) {
 
-			collection.addView(this.views.get(position), 0);
-			return this.views.get(position);
+			collection.addView(views.get(position), 0);
+			return views.get(position);
 		}
 
 		@Override
@@ -572,46 +505,9 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		public getMatchInfo(int type, View contentView, View loadingView,
 				View retryView) {
+			
 			super(type, contentView, loadingView, retryView);
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public String doInBackground(String... uri) {
-
-			super.doInBackground(uri[0]);
-			pullMatch(responseString);
-			pullNews();
-			return responseString;
-		}
-
-		private void pullMatch(String responseString) {
-			Document doc = Jsoup.parse(responseString);
-			links = doc.select("tr:has(td.opp)");
-			if (!links.isEmpty()) {
-
-				for (Element link : links) {
-
-					String match;
-
-					match = link.select("span").first().text().trim()
-							+ " vs "
-							+ link.select("span").get(2).text().trim()
-							+ " ";
-					if (link.getElementsByClass("results").isEmpty()) {
-						match += link.select("td").get(3).text().trim();
-						matches.add(match);
-					} else {
-						match += link.select("span.hidden").first().text()
-								.trim();
-						results.add(match);
-					}
-				}
-
-
-			} else {
-				handleCancelView();
-			}
+			
 		}
 
 		@Override
@@ -632,6 +528,46 @@ public class LoadMore_News extends LoadMore_Base implements
 		}
 
 		@Override
+		public String doInBackground(String... uri) {
+
+			super.doInBackground(uri[0]);
+
+			if (!taskCancel && responseString != null) {
+				pullMatch(responseString);
+			} else {
+				handleCancelView();
+			}
+			// pullNews();
+			return responseString;
+		}
+
+		private void pullMatch(String responseString) {
+			Document doc = Jsoup.parse(responseString);
+			links = doc.select("tr:has(td.opp)");
+			if (!links.isEmpty()) {
+
+				for (Element link : links) {
+
+					String match;
+
+					match = link.select("span").first().text().trim() + " vs "
+							+ link.select("span").get(2).text().trim() + " ";
+					if (link.getElementsByClass("results").isEmpty()) {
+						match += link.select("td").get(3).text().trim();
+						matches.add(match);
+					} else {
+						match += link.select("span.hidden").first().text()
+								.trim();
+						results.add(match);
+					}
+				}
+
+			} else {
+				handleCancelView();
+			}
+		}
+
+		@Override
 		protected void onPostExecute(String result) {
 
 			// Log.d("AsyncDebug", "Into onPostExecute!");
@@ -640,8 +576,8 @@ public class LoadMore_News extends LoadMore_Base implements
 				// Do anything with response..
 				initViewPager();
 
-				// Loading done
 				DisplayView(contentView, retryView, loadingView);
+
 			} else {
 				handleCancelView();
 			}
@@ -650,9 +586,80 @@ public class LoadMore_News extends LoadMore_Base implements
 
 	}
 
+	// class LoadMoreTask_News extends LoadMoreTask {
+	//
+	// public LoadMoreTask_News(int type, View contentView, View loadingView,
+	// View retryView) {
+	// super(type, contentView, loadingView, retryView);
+	// // TODO Auto-generated constructor stub
+	// }
+	//
+	// @Override
+	// protected void onPostExecute(String result) {
+	// // Do anything with response..
+	// // System.out.println(result);
+	// //Log.d("AsyncDebug", "Into onPostExecute!");
+	//
+	// if (!taskCancel && result != null) {
+	//
+	// feedManager.setmJSON(result);
+	//
+	// List<Video> newVideos = feedManager.getVideoPlaylist();
+	//
+	// // adding new loaded videos to our current video list
+	// for (Video v : newVideos) {
+	// //System.out.println("new id: " + v.getVideoId());
+	// if (needFilter) {
+	// filtering(v);
+	// // System.out.println("need filter!");
+	// } else {
+	// titles.add(v.getTitle());
+	// videolist.add(v);
+	// }
+	// }
+	// try {
+	// // put the next API in the first place of the array
+	// API.add(feedManager.getNextApi());
+	// // nextAPI = feedManager.getNextApi();
+	// if (API.get(API.size()-1) == null) {
+	// // No more videos left
+	// isMoreVideos = false;
+	// }
+	// } catch (JSONException e) {
+	// // TODO Auto-generated catch block
+	// //e.printStackTrace();
+	// }
+	// vaa.notifyDataSetChanged();
+	//
+	// ((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
+	//
+	// DisplayView(contentView, retryView, loadingView);
+	//
+	// if (!isMoreVideos) {
+	// ((LoadMoreListView) myLoadMoreListView).onNoMoreItems();
+	//
+	// myLoadMoreListView.setOnLoadMoreListener(null);
+	// }
+	//
+	// } else {
+	// handleCancelView();
+	// }
+	// }
+	//
+	// }
+
 	@Override
 	protected void doRequest() {
 		// TODO Auto-generated method stub
+		mMatchInfo = new getMatchInfo(getMatchInfo.INITTASK, pagerContent,
+				pagerLoading, pagerRetry);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			mMatchInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+		} else {
+			mMatchInfo.execute(url);
+		}
+		
 		for (String s : API) {
 			LoadMoreTask newTask = new LoadMoreTask(LoadMoreTask.INITTASK,
 					myLoadMoreListView, listLoading, listRetry);
@@ -666,17 +673,10 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		}
 
-		mMatchInfo = new getMatchInfo(getMatchInfo.INITTASK, pagerContent,
-				pagerLoading, pagerRetry);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			mMatchInfo.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
-		} else {
-			mMatchInfo.execute(url);
-		}
 	}
 
-
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onDestroy() {
 
@@ -715,43 +715,6 @@ public class LoadMore_News extends LoadMore_Base implements
 	public boolean onQueryTextChange(String newText) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	// Pull the news from gosu
-	public void pullNews() {
-		Document doc;
-		try {
-
-			// need http protocol
-			doc = Jsoup.connect("http://www.gosugamers.net/lol/news/archive")
-					.userAgent("Mozilla").get();
-
-			// get all links
-			Elements links = doc.select("tr:has(td)");
-			if (!links.isEmpty()) {
-				String href = "";
-				String newsTitle = "";
-
-				for (Element link : links) {
-
-					// get the value from href attribute
-					href = link.select("a").first().attr("href");
-					newsTitle = link.select("a").first().text();
-
-					if (href.contains("news")) {
-
-						News aNews = new News();
-						aNews.setLink(href);
-						aNews.setTitle(newsTitle);
-						mNews.add(aNews);
-					}
-				}
-
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -30,12 +30,10 @@ import com.wwyz.loltv.data.News;
 public class LoadMore_Gosu_News extends LoadMore_Base {
 	private ArrayList<News> mNews = new ArrayList<News>();
 
-
 	private NewsArrayAdapter mArrayAdatper;
 	private getMatchInfo mgetMatchInfo;
 	private int pageNum;
 	private final String baseUri = "http://www.gosugamers.net";
-
 
 	@Override
 	public void Initializing() {
@@ -70,7 +68,7 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 	public void setListView() {
 
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
-		//myLoadMoreListView.setDivider(null);
+		// myLoadMoreListView.setDivider(null);
 
 		setBannerInHeader();
 
@@ -125,11 +123,11 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 		// MatchDetailsActivity.class);
 		// i.putExtra("match", matchArray.get(position - 1));
 		// startActivity(i);
-		
-		String url = mNews.get(position).getLink();
+
+		String url = mNews.get(position - 1).getLink();
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
-//		startActivity(i);
+		// startActivity(i);
 		startActivity(Intent.createChooser(i, "Choose a browser"));
 
 	}
@@ -180,58 +178,75 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 		}
 
 		@Override
+		public String doInBackground(String... uri) {
+
+			super.doInBackground(uri[0]);
+
+			if (!taskCancel && responseString != null) {
+				pullNews(responseString);
+			} else {
+				handleCancelView();
+			}
+			// pullNews();
+			return responseString;
+		}
+
+		private void pullNews(String responseString) {
+			Document doc = Jsoup.parse(responseString);
+			// get all links
+			Elements links = new Elements();
+			links = doc.select("tr:has(td)");
+			if (!links.isEmpty()) {
+				String href = "";
+				String newsTitle = "";
+				String date = "";
+				for (Element link : links) {
+
+					// get the value from href attribute
+					href = link.select("a").first().attr("href");
+					newsTitle = link.select("a").first().text();
+					date = link.select("td").get(1).text();
+					if (href.contains("news")) {
+
+						News aNews = new News();
+						aNews.setLink(baseUri + href);
+						aNews.setTitle(newsTitle);
+						aNews.setDate(processDate(date));
+						mNews.add(aNews);
+					}
+				}
+
+			}
+
+			Elements pages = new Elements();
+			pages = doc.select("div.pages");
+			if (pages != null) {
+				Elements page_indicators = pages.select("a");
+				if (page_indicators != null) {
+					isMoreVideos = false;
+
+					if ((page_indicators.size() > 7) || (pageNum == 1)) {
+						isMoreVideos = true;
+						pageNum++;
+						API.add("http://www.gosugamers.net/lol/news/archive?page="
+								+ pageNum);
+					} else {
+						isMoreVideos = false;
+					}
+				}
+			}
+		}
+
+		@Override
 		protected void onPostExecute(String result) {
 
 			// Log.d("AsyncDebug", "Into onPostExecute!");
 
 			if (!taskCancel && result != null) {
 
-				Document doc = Jsoup.parse(result);
-				// get all links
-				Elements links = doc.select("tr:has(td)");
-				if (!links.isEmpty()) {
-					String href = "";
-					String newsTitle = "";
-					String date = "";
-					for (Element link : links) {
-
-						// get the value from href attribute
-						href = link.select("a").first().attr("href");
-						newsTitle = link.select("a").first().text();
-						date = link.select("td").get(1).text();
-						if (href.contains("news")) {
-
-							News aNews = new News();
-							aNews.setLink(baseUri+href);
-							aNews.setTitle(newsTitle);
-							aNews.setDate(processDate(date));
-							mNews.add(aNews);
-						}
-					}
-
-				}
-
-				Elements pages = doc.select("div.pages");
-				if (pages != null) {
-					Elements page_indicators = pages.select("a");
-					if (page_indicators != null) {
-						isMoreVideos = false;
-						
-						if((page_indicators.size() > 7) || (pageNum == 1)){
-							isMoreVideos = true;
-							pageNum++;
-							API.add("http://www.gosugamers.net/news/archive?page="
-									+ pageNum);
-						}else{
-							isMoreVideos = false;
-						}
-					}
-				}
-
 				mArrayAdatper.notifyDataSetChanged();
 
-				// Call onLoadMoreComplete when the LoadMore task has
-				// finished
+				// Call onLoadMoreComplete when the LoadMore task has finished
 				((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
 
 				// loading done
@@ -261,7 +276,7 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 			mgetMatchInfo.cancel(true);
 
 	}
-	
+
 	@SuppressLint("SimpleDateFormat")
 	public String processDate(String s) {
 
