@@ -176,8 +176,6 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 
 			if (!taskCancel && responseString != null) {
 				pullResults(responseString);
-			} else {
-				handleCancelView();
 			}
 			// pullNews();
 			return responseString;

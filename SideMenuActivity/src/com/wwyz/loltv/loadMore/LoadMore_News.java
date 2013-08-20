@@ -40,11 +40,15 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
+import com.costum.android.widget.LoadMoreListView;
+import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.wwyz.loltv.MyAsyncTask;
 import com.wwyz.loltv.R;
 import com.wwyz.loltv.SideMenuActivity;
+import com.wwyz.loltv.adapters.VideoArrayAdapter;
 import com.wwyz.loltv.feedManager.FeedManager_Subscription;
+
 
 @SuppressLint("HandlerLeak")
 public class LoadMore_News extends LoadMore_Base implements
@@ -162,7 +166,45 @@ public class LoadMore_News extends LoadMore_Base implements
 		listLoading = sfa.findViewById(R.id.listViewLoadingIndicator);
 		listRetry = sfa.findViewById(R.id.ListViewRetryView);
 
-		super.setListView();
+//		super.setListView();
+		myLoadMoreListView = (LoadMoreListView) this.getListView();
+		myLoadMoreListView.setDivider(null);		
+		
+		setBannerInHeader();
+		
+		vaa = new VideoArrayAdapter(sfa, titles, videolist, imageLoader);
+		setListAdapter(vaa);
+		
+		if (isMoreVideos) {
+			// there are more videos in the list
+			// set the listener for loading need
+			myLoadMoreListView.setOnLoadMoreListener(new OnLoadMoreListener() {
+				public void onLoadMore() {
+					// Do the work to load more items at the end of list
+
+					if (isMoreVideos == true) {
+						// new LoadMoreTask().execute(API.get(0));
+						LoadMoreTask newTask = (LoadMoreTask) new LoadMoreTask(
+								LoadMoreTask.LOADMORETASK, myLoadMoreListView,
+								listLoading, listRetry);
+						newTask.execute(API.get(API.size()-1));
+						mLoadMoreTasks.add(newTask);
+					}
+
+				}
+			});
+
+		} else {
+			myLoadMoreListView.setOnLoadMoreListener(null);
+		}
+
+		// sending Initial Get Request to Youtube
+		if (!API.isEmpty()) {
+			// show loading screen
+			// DisplayView(fullscreenLoadingView, myLoadMoreListView,
+			// mRetryView) ;
+			doRequest();
+		}
 
 	}
 
@@ -534,8 +576,6 @@ public class LoadMore_News extends LoadMore_Base implements
 
 			if (!taskCancel && responseString != null) {
 				pullMatch(responseString);
-			} else {
-				handleCancelView();
 			}
 			// pullNews();
 			return responseString;

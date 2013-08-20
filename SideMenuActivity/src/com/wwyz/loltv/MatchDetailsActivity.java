@@ -191,7 +191,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 	}
 
 	private class getMatchDetails extends MyAsyncTask {
-
+		Document doc;
 		public getMatchDetails(int type, View contentView, View loadingView,
 				View retryView) {
 			super(type, contentView, loadingView, retryView);
@@ -216,15 +216,24 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			});
 
 		}
+		@Override
+		public String doInBackground(String... uri) {
 
+			super.doInBackground(uri[0]);
+
+			if (!taskCancel && responseString != null) {
+				doc = Jsoup.parse(responseString);
+			}
+
+			return responseString;
+		}
+		
 		@Override
 		protected void onPostExecute(String result) {
 			// Checking network status first
 			// Log.d("AsyncDebug", "Into onPostExecute!");
 
 			if (!taskCancel && result != null) {
-
-				Document doc = Jsoup.parse(result);
 
 				Element opp_1 = null;
 

@@ -184,8 +184,6 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 
 			if (!taskCancel && responseString != null) {
 				pullNews(responseString);
-			} else {
-				handleCancelView();
 			}
 			// pullNews();
 			return responseString;
