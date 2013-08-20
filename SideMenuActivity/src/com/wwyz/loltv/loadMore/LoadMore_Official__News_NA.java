@@ -32,7 +32,7 @@ import com.wwyz.loltv.adapters.NewsArrayAdapter;
 import com.wwyz.loltv.adapters.NewsArrayAdapter_Official;
 import com.wwyz.loltv.data.News;
 
-public class LoadMore_Official_News extends LoadMore_Base {
+public class LoadMore_Official__News_NA extends LoadMore_Base {
 	private ArrayList<News> mNews = new ArrayList<News>();
 
 	private NewsArrayAdapter_Official mArrayAdatper;
@@ -48,7 +48,7 @@ public class LoadMore_Official_News extends LoadMore_Base {
 		abTitle = "News";
 
 		// Give API URLs
-		API.add("http://beta.na.leagueoflegends.com/en/news");
+		API.add("http://beta.na.leagueoflegends.com/en/news/");
 
 		pageNum = 0;
 
@@ -66,7 +66,7 @@ public class LoadMore_Official_News extends LoadMore_Base {
 
 			mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-			final String[] catagory = { "Official", "Gosu" };
+			final String[] catagory = { "NA", "EUW" , "EUE"};
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 					mActionBar.getThemedContext(),
@@ -99,12 +99,17 @@ public class LoadMore_Official_News extends LoadMore_Base {
 
 		case 0:
 			// Menu option 1
-			ft.replace(R.id.content_frame, new LoadMore_Official_News());
+			ft.replace(R.id.content_frame, new LoadMore_Official__News_NA());
 			break;
 
 		case 1:
 			// Menu option 2
-			ft.replace(R.id.content_frame, new LoadMore_Gosu_News());
+			ft.replace(R.id.content_frame, new LoadMore_Official__News_EUW());
+			break;
+			
+		case 2:
+			// Menu option 2
+			ft.replace(R.id.content_frame, new LoadMore_Official__News_EUE());
 			break;
 
 		}
@@ -191,8 +196,8 @@ public class LoadMore_Official_News extends LoadMore_Base {
 		String url = mNews.get(position - 1).getLink();
 		Intent i = new Intent(Intent.ACTION_VIEW);
 		i.setData(Uri.parse(url));
-		// startActivity(i);
-		startActivity(Intent.createChooser(i, "Choose a browser"));
+		startActivity(i);
+//		startActivity(Intent.createChooser(i, "Choose a browser"));
 
 	}
 

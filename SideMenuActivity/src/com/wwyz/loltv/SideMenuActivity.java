@@ -30,7 +30,7 @@ import com.wwyz.loltv.loadMore.LoadMore_Gosu_News;
 import com.wwyz.loltv.loadMore.LoadMore_H_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_M_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_News;
-import com.wwyz.loltv.loadMore.LoadMore_Official_News;
+import com.wwyz.loltv.loadMore.LoadMore_Official__News_NA;
 import com.wwyz.loltv.loadMore.LoadMore_Result;
 import com.wwyz.loltv.loadMore.LoadMore_Twitch;
 import com.wwyz.loltv.loadMore.LoadMore_UpcomingMatch;
@@ -78,7 +78,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		items.add(new EntryItem("What's new", "Fresh meat!",
 				R.drawable.fresh_meat));
 		
-		items.add(new EntryItem("Latest News", "From gosugamers.net",
+		items.add(new EntryItem("Latest News", "From official website",
 				R.drawable.fresh_meat));
 
 		items.add(new SectionItem("Latest Videos"));
@@ -234,7 +234,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			
 		case 2:
 			// Gosu news
-			ft.replace(R.id.content_frame, new LoadMore_Official_News());
+			ft.replace(R.id.content_frame, new LoadMore_Official__News_NA());
 			break;
 
 		case 4:
