@@ -30,6 +30,7 @@ import com.wwyz.loltv.loadMore.LoadMore_Gosu_News;
 import com.wwyz.loltv.loadMore.LoadMore_H_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_M_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_News;
+import com.wwyz.loltv.loadMore.LoadMore_Official_News;
 import com.wwyz.loltv.loadMore.LoadMore_Result;
 import com.wwyz.loltv.loadMore.LoadMore_Twitch;
 import com.wwyz.loltv.loadMore.LoadMore_UpcomingMatch;
@@ -233,7 +234,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			
 		case 2:
 			// Gosu news
-			ft.replace(R.id.content_frame, new LoadMore_Gosu_News());
+			ft.replace(R.id.content_frame, new LoadMore_Official_News());
 			break;
 
 		case 4:

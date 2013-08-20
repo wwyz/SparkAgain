@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,15 +29,16 @@ import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.wwyz.loltv.R;
 import com.wwyz.loltv.adapters.NewsArrayAdapter;
+import com.wwyz.loltv.adapters.NewsArrayAdapter_Official;
 import com.wwyz.loltv.data.News;
 
-public class LoadMore_Gosu_News extends LoadMore_Base {
+public class LoadMore_Official_News extends LoadMore_Base {
 	private ArrayList<News> mNews = new ArrayList<News>();
 
-	private NewsArrayAdapter mArrayAdatper;
+	private NewsArrayAdapter_Official mArrayAdatper;
 	private getMatchInfo mgetMatchInfo;
 	private int pageNum;
-	private final String baseUri = "http://www.gosugamers.net";
+	private final String baseUri = "http://beta.na.leagueoflegends.com";
 
 	@Override
 	public void Initializing() {
@@ -46,15 +48,15 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 		abTitle = "News";
 
 		// Give API URLs
-		API.add("http://www.gosugamers.net/lol/news/archive");
+		API.add("http://beta.na.leagueoflegends.com/en/news");
 
-		pageNum = 1;
+		pageNum = 0;
 
 		// Show menu
 		setHasOptionsMenu(true);
 		setOptionMenu(true, true);
 
-		currentPosition = 1;
+		currentPosition = 0;
 
 	}
 
@@ -119,7 +121,8 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 		API.clear();
 		API.add(firstApi);
 		isMoreVideos = true;
-		pageNum = 1;
+		pageNum = 0;
+		titles.clear();
 		mNews.clear();
 		setListView();
 	}
@@ -132,7 +135,8 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 
 		setBannerInHeader();
 
-		mArrayAdatper = new NewsArrayAdapter(sfa, mNews);
+		mArrayAdatper = new NewsArrayAdapter_Official(sfa, titles, mNews,
+				imageLoader);
 		setListAdapter(mArrayAdatper);
 
 		if (isMoreVideos) {
@@ -253,45 +257,56 @@ public class LoadMore_Gosu_News extends LoadMore_Base {
 			Document doc = Jsoup.parse(responseString);
 			// get all links
 			Elements links = new Elements();
-			links = doc.select("tr:has(td)");
+			links = doc.select("div.white-stone");
+
 			if (!links.isEmpty()) {
-				String href = "";
+				String imageUri = "";
+				String newsUri = "";
 				String newsTitle = "";
+				String newsSubtitle = "";
 				String date = "";
+				System.out.println("Number of News: " + links.size());
 				for (Element link : links) {
 
 					// get the value from href attribute
-					href = link.select("a").first().attr("href");
-					newsTitle = link.select("a").first().text();
-					date = link.select("td").get(1).text();
-					if (href.contains("news")) {
+					imageUri = link.select("img").first().attr("src");
+					newsUri = link.select("a").first().attr("href");
+					newsTitle = link.select("a").first().attr("title");
+					newsSubtitle = link.select("div.teaser-content").first()
+							.select("div").first().text();
+					date = link.select("span").first().text();
 
-						News aNews = new News();
-						aNews.setLink(baseUri + href);
-						aNews.setTitle(newsTitle);
-						aNews.setDate(processDate(date));
-						mNews.add(aNews);
-					}
+					// System.out.println("\nImage uri: " + baseUri + imageUri);
+					// System.out.println("News href: " + baseUri + newsUri);
+					// System.out.println("News Title: " + newsTitle);
+					// System.out.println("News Subtitle uri: " + newsSubtitle);
+					// System.out.println("Date: " + date);
+
+					titles.add(newsTitle);
+
+					News aNews = new News();
+					aNews.setLink(baseUri + newsUri);
+					aNews.setImageUri(baseUri + imageUri);
+					aNews.setTitle(newsTitle);
+					aNews.setSubTitle(newsSubtitle);
+					aNews.setDate(date);
+					mNews.add(aNews);
+
 				}
 
 			}
 
 			Elements pages = new Elements();
-			pages = doc.select("div.pages");
-			if (pages != null) {
-				Elements page_indicators = pages.select("a");
-				if (page_indicators != null) {
-					isMoreVideos = false;
+			pages = doc.select("a[class=next disabled]");
+			if (pages != null && pages.size() == 0) {
 
-					if ((page_indicators.size() > 7) || (pageNum == 1)) {
-						isMoreVideos = true;
-						pageNum++;
-						API.add("http://www.gosugamers.net/lol/news/archive?page="
-								+ pageNum);
-					} else {
-						isMoreVideos = false;
-					}
-				}
+				isMoreVideos = true;
+				pageNum++;
+				API.add("http://beta.na.leagueoflegends.com/en/news?page="
+						+ pageNum);
+
+			} else {
+				isMoreVideos = false;
 			}
 		}
 

@@ -5,7 +5,21 @@ public class News {
 	private String link;
 	private String title;
 	private String date;
+	private String subTitle;
+	private String imageUri;
 	
+	public String getSubTitle() {
+		return subTitle;
+	}
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+	public String getImageUri() {
+		return imageUri;
+	}
+	public void setImageUri(String imageUri) {
+		this.imageUri = imageUri;
+	}
 	public String getLink() {
 		return link;
 	}
