@@ -8,7 +8,7 @@ public class Forum_reddit extends Forum_fragment {
 	@Override
 	public void Initializing() {
 		// Give a title for the action bar
-		abTitle = "Reddit";
+		abTitle = "Forums";
 
 		// Give API URLs
 

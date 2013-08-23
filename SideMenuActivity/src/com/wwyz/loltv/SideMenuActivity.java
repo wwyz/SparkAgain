@@ -78,7 +78,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		// Pass results to MenuListAdapter Class
 		// mMenuAdapter = new MenuListAdapter(this, title, subtitle, icon);
 		items.add(new SectionItem("Everyday's Feed"));
-		items.add(new EntryItem("What's new", "Fresh meat!",
+		items.add(new EntryItem("What's new", "Your daily dose of LoL",
 				R.drawable.fresh_meat));
 		
 		items.add(new EntryItem("Latest News", "From official website",
@@ -98,7 +98,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.live));
 
 		items.add(new SectionItem("Match Table"));
-		items.add(new EntryItem("Upcomings", "Matches coming soon!",
+		items.add(new EntryItem("Upcomings", "Matches coming soon",
 				R.drawable.upcoming));
 		items.add(new EntryItem("Recent Results", "Latest match results",
 				R.drawable.list_result));
@@ -109,7 +109,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.feedback));
 		
 		items.add(new EntryItem("Share", "Share our app", R.drawable.ic_action_social_share));
-		items.add(new EntryItem("Rate LoLTV", "Like it?", R.drawable.ic_action_rating_good));
+		items.add(new EntryItem("Rate LoL Daily", "Like it?", R.drawable.ic_action_rating_good));
 		
 		
 		eAdapter = new EntryAdapter(this, items);
@@ -287,7 +287,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
-			email.setData(Uri.parse("mailto:my.loltv1@gmail.com?subject=LoLTV Feedback"));
+			email.setData(Uri.parse("mailto:my.loltv1@gmail.com?subject=LoL Daily Feedback"));
 			startActivity(Intent.createChooser(email, "Send feedback via.."));
 //			startActivity(email);
 			break;

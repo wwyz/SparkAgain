@@ -14,7 +14,7 @@ public class Forum_official_na extends Forum_fragment {
 	@Override
 	public void Initializing() {
 		// Give a title for the action bar
-		abTitle = "Official Forum";
+		abTitle = "Forums";
 
 		// Give API URLs
 

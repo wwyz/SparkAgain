@@ -45,7 +45,7 @@ public class LoadMore_Official__News_EUW extends LoadMore_Base {
 		// Inflating view
 
 		// Give a title for the action bar
-		abTitle = "News";
+		abTitle = "Latest News";
 
 		// Give API URLs
 		API.add("http://beta.euw.leagueoflegends.com/en/news/");
