@@ -175,7 +175,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		searchView.setOnQueryTextListener(this);
 
 		menu.add(0, 20, 0, "Search")
-				.setIcon(R.drawable.ic_search)
+				.setIcon(R.drawable.abs__ic_search)
 				.setActionView(searchView)
 				.setShowAsAction(
 						MenuItem.SHOW_AS_ACTION_IF_ROOM
