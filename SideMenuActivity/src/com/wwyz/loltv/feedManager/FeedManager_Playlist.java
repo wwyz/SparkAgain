@@ -12,11 +12,13 @@ public class FeedManager_Playlist extends FeedManager_Base {
 
 	@Override
 	public ArrayList<Video> getVideoPlaylist() {
-
+		
+		processJSON(mJSON);
+		
 		ArrayList<Video> videos = new ArrayList<Video>();
 
 		try {
-			processJSON(mJSON);
+			
 
 			// System.out.println(plTitle);
 			// get the playlist
@@ -62,7 +64,7 @@ public class FeedManager_Playlist extends FeedManager_Base {
 
 			}
 
-		} catch (JSONException ex) {
+		} catch (Exception ex) {
 			//ex.printStackTrace();
 		}
 

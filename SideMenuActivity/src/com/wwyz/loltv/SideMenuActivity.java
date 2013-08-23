@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -45,6 +46,8 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 	ArrayList<Item> items = new ArrayList<Item>();
 	ActionBar mActionBar;
 	EntryAdapter eAdapter;
+	int currentItem;
+	protected Fragment currentFragment;
 
 	private FragmentManager fm;
 
@@ -79,7 +82,10 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.fresh_meat));
 		
 		items.add(new EntryItem("Latest News", "From official website",
-				R.drawable.fresh_meat));
+				R.drawable.ic_action_news));
+		
+		items.add(new EntryItem("Forums", "Chat with others",
+				R.drawable.ic_action_forum));
 
 		items.add(new SectionItem("Latest Videos"));
 		items.add(new EntryItem("Highlights", "LoL excitements",
@@ -208,7 +214,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 	private void selectItem(int position) {
 
 		// Set the indicator in drawer to correct position
-		if (position <= 10)
+		if (position <= 11)
 			setDrawerIndicator(position);
 
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -224,45 +230,60 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		}, 0);
+		
+		currentItem = position;
 
 		switch (position) {
 
 		case 1:
 			// News
-			ft.replace(R.id.content_frame, new LoadMore_News());
+			currentFragment = new LoadMore_News();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
 			
 		case 2:
 			// Gosu news
-			ft.replace(R.id.content_frame, new LoadMore_Official__News_NA());
+			currentFragment = new LoadMore_Official__News_NA();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
-
-		case 4:
-			// Highlight section
-			ft.replace(R.id.content_frame, new LoadMore_H_Subscription());
+			
+		case 3:
+			// Gosu news
+			currentFragment = new Forum_reddit();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
 
 		case 5:
+			// Highlight section
+			currentFragment = new LoadMore_H_Subscription();
+			ft.replace(R.id.content_frame, currentFragment);
+			break;
+
+		case 6:
 			// Match section
-			ft.replace(R.id.content_frame, new LoadMore_M_Subscription());
+			currentFragment = new LoadMore_M_Subscription();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
 
-		case 7:
+		case 8:
 			// Twitch section
-			ft.replace(R.id.content_frame, new LoadMore_Twitch());
-			break;
-
-		case 9:
-			// upcoming section
-			ft.replace(R.id.content_frame, new LoadMore_UpcomingMatch());
+			currentFragment = new LoadMore_Twitch();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
 
 		case 10:
+			// upcoming section
+			currentFragment = new LoadMore_UpcomingMatch();
+			ft.replace(R.id.content_frame, currentFragment);
+			break;
+
+		case 11:
 			// result section
-			ft.replace(R.id.content_frame, new LoadMore_Result());
+			currentFragment = new LoadMore_Result();
+			ft.replace(R.id.content_frame, currentFragment);
 			break;
 			
-		case 12:
+		case 13:
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
@@ -271,7 +292,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 //			startActivity(email);
 			break;
 			
-		case 13:
+		case 14:
 			// Share Dota2TV
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
@@ -281,7 +302,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 //			startActivity(sendIntent);
 			break;
 			
-		case 14:
+		case 15:
 			// Rate Dota2TV
 		    Intent rateIntent = new Intent(Intent.ACTION_VIEW);
 		    //Try Google play
@@ -325,10 +346,18 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 	// Handles exit
 	@Override
 	public void onBackPressed() {
+		
+		boolean skipBack = false;
+		
+		if (currentItem == 3){
+			skipBack = ((Forum_fragment)currentFragment).backWebView();
+		}
+		
+		if (!skipBack){
 		if (fm.getBackStackEntryCount() == 0) {
 
 			// No fragment in back stack
-
+			
 			if (doubleBackToExitPressedOnce) {
 				super.onBackPressed();
 				return;
@@ -352,8 +381,11 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 
 			super.onBackPressed();
 		}
+		}
+		
 	}
 	
+		
 	public void setDrawerIndicator(int position){
 		for (Item i : items)
 			i.setUnchecked();
@@ -371,6 +403,10 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 	    {
 	        return false;
 	    }
+	}
+	
+	public void setCurrentFragment(Fragment fragment){
+		currentFragment = fragment;
 	}
 	 
 

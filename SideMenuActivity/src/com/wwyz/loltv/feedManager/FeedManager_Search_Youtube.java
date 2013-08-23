@@ -11,13 +11,8 @@ import com.wwyz.loltv.data.Video;
 public class FeedManager_Search_Youtube extends FeedManager_Base{
 	@Override
 	public ArrayList<Video> getVideoPlaylist() {
-		try {
-			if (mJSON != null)
-				processJSON(mJSON);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
+		
+		processJSON(mJSON);
 
 		ArrayList<Video> videos = new ArrayList<Video>();
 
@@ -80,7 +75,7 @@ public class FeedManager_Search_Youtube extends FeedManager_Base{
 
 			}
 
-		} catch (JSONException ex) {
+		} catch (Exception ex) {
 
 			//ex.printStackTrace();
 		}

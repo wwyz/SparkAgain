@@ -1,6 +1,7 @@
 package com.wwyz.loltv.loadMore;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,8 +48,8 @@ import com.wwyz.loltv.MyAsyncTask;
 import com.wwyz.loltv.R;
 import com.wwyz.loltv.SideMenuActivity;
 import com.wwyz.loltv.adapters.VideoArrayAdapter;
+import com.wwyz.loltv.data.Match;
 import com.wwyz.loltv.feedManager.FeedManager_Subscription;
-
 
 @SuppressLint("HandlerLeak")
 public class LoadMore_News extends LoadMore_Base implements
@@ -72,7 +73,7 @@ public class LoadMore_News extends LoadMore_Base implements
 	private View pagerRetry;
 	private View listLoading;
 	private View listRetry;
-	private String url = "http://www.gosugamers.net/lol/gosubet";
+	private String url = "http://www.in2lol.com/en/matches/";
 	private int rand_1;
 	private int rand_2;
 	private AdvAdapter myAdvAdapter;
@@ -90,7 +91,38 @@ public class LoadMore_News extends LoadMore_Base implements
 			R.drawable.lol10, R.drawable.lol11, R.drawable.lol12,
 			R.drawable.lol13, R.drawable.lol14, R.drawable.lol15,
 			R.drawable.lol16, R.drawable.lol17, R.drawable.lol18,
-			R.drawable.lol19, R.drawable.lol20, R.drawable.lol21 };
+			R.drawable.lol19, R.drawable.lol20, R.drawable.lol21,
+			R.drawable.lol22, R.drawable.lol23, R.drawable.lol24,
+			R.drawable.lol25, R.drawable.lol26, R.drawable.lol27,
+			R.drawable.lol28, R.drawable.lol29, R.drawable.lol30,
+			R.drawable.lol31, R.drawable.lol32, R.drawable.lol33,
+			R.drawable.lol34, R.drawable.lol35, R.drawable.lol36,
+			R.drawable.lol37, R.drawable.lol38, R.drawable.lol39,
+			R.drawable.lol40, R.drawable.lol41, R.drawable.lol42,
+			R.drawable.lol43, R.drawable.lol44, R.drawable.lol45,
+			R.drawable.lol46, R.drawable.lol47, R.drawable.lol48,
+			R.drawable.lol49, R.drawable.lol50, R.drawable.lol51,
+			R.drawable.lol52, R.drawable.lol53, R.drawable.lol54,
+			R.drawable.lol55, R.drawable.lol56, R.drawable.lol57,
+			R.drawable.lol58, R.drawable.lol59, R.drawable.lol60,
+			R.drawable.lol61, R.drawable.lol62, R.drawable.lol63,
+			R.drawable.lol64, R.drawable.lol65, R.drawable.lol66,
+			R.drawable.lol67, R.drawable.lol68, R.drawable.lol69,
+			R.drawable.lol70, R.drawable.lol71, R.drawable.lol72,
+			R.drawable.lol73, R.drawable.lol74, R.drawable.lol75,
+			R.drawable.lol76, R.drawable.lol77, R.drawable.lol78,
+			R.drawable.lol79, R.drawable.lol80, R.drawable.lol81,
+			R.drawable.lol82, R.drawable.lol83, R.drawable.lol84,
+			R.drawable.lol85, R.drawable.lol86, R.drawable.lol87,
+			R.drawable.lol88, R.drawable.lol89, R.drawable.lol90,
+			R.drawable.lol91, R.drawable.lol92, R.drawable.lol93,
+			R.drawable.lol94, R.drawable.lol95, R.drawable.lol96,
+			R.drawable.lol97, R.drawable.lol98, R.drawable.lol99,
+			R.drawable.lol100, R.drawable.lol101, R.drawable.lol102,
+			R.drawable.lol103, R.drawable.lol104, R.drawable.lol105,
+			R.drawable.lol106, R.drawable.lol107, R.drawable.lol108,
+			R.drawable.lol109, R.drawable.lol110, R.drawable.lol111,
+			R.drawable.lol112, R.drawable.lol113 };
 
 	private List<View> views = new ArrayList<View>();
 
@@ -166,15 +198,15 @@ public class LoadMore_News extends LoadMore_Base implements
 		listLoading = sfa.findViewById(R.id.listViewLoadingIndicator);
 		listRetry = sfa.findViewById(R.id.ListViewRetryView);
 
-//		super.setListView();
+		// super.setListView();
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
-		myLoadMoreListView.setDivider(null);		
-		
+		myLoadMoreListView.setDivider(null);
+
 		setBannerInHeader();
-		
+
 		vaa = new VideoArrayAdapter(sfa, titles, videolist, imageLoader);
 		setListAdapter(vaa);
-		
+
 		if (isMoreVideos) {
 			// there are more videos in the list
 			// set the listener for loading need
@@ -187,7 +219,7 @@ public class LoadMore_News extends LoadMore_Base implements
 						LoadMoreTask newTask = (LoadMoreTask) new LoadMoreTask(
 								LoadMoreTask.LOADMORETASK, myLoadMoreListView,
 								listLoading, listRetry);
-						newTask.execute(API.get(API.size()-1));
+						newTask.execute(API.get(API.size() - 1));
 						mLoadMoreTasks.add(newTask);
 					}
 
@@ -275,7 +307,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			@Override
 			public void onClick(View v) {
 				// Set the drawer indicator in position "Upcoming Matches"
-				sma.setDrawerIndicator(9);
+				sma.setDrawerIndicator(10);
 
 				// Replacing the current fragment
 				FragmentTransaction ft = getFragmentManager()
@@ -326,7 +358,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			public void onClick(View v) {
 
 				// Set the drawer indicator in position "Recent Result"
-				sma.setDrawerIndicator(10);
+				sma.setDrawerIndicator(11);
 
 				FragmentTransaction ft = getFragmentManager()
 						.beginTransaction();
@@ -547,9 +579,9 @@ public class LoadMore_News extends LoadMore_Base implements
 
 		public getMatchInfo(int type, View contentView, View loadingView,
 				View retryView) {
-			
+
 			super(type, contentView, loadingView, retryView);
-			
+
 		}
 
 		@Override
@@ -575,36 +607,80 @@ public class LoadMore_News extends LoadMore_Base implements
 			super.doInBackground(uri[0]);
 
 			if (!taskCancel && responseString != null) {
-				pullMatch(responseString);
+
+				try {
+					pullMatch(responseString);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
 			}
 			// pullNews();
 			return responseString;
 		}
 
 		private void pullMatch(String responseString) {
-			Document doc = Jsoup.parse(responseString);
-			links = doc.select("tr:has(td.opp)");
-			if (!links.isEmpty()) {
 
+			Document doc = Jsoup.parse(responseString);
+			// links = doc.select("tr:has(td.opp)");
+			// if (!links.isEmpty()) {
+			//
+			// for (Element link : links) {
+			//
+			// String match;
+			//
+			// match = link.select("span").first().text().trim() + " vs "
+			// + link.select("span").get(2).text().trim() + " ";
+			// if (link.getElementsByClass("results").isEmpty()) {
+			// match += link.select("td").get(3).text().trim();
+			// matches.add(match);
+			// } else {
+			// match += link.select("span.hidden").first().text()
+			// .trim();
+			// results.add(match);
+			// }
+			// }
+			//
+			// } else {
+			// handleCancelView();
+			// }
+			Element box = null;
+			box = doc.select("div.main").get(0);
+
+			// System.out.println(box.toString());
+
+			if (box != null) {
+
+				isMoreVideos = false;
+
+				links = box.select("a.item");
+
+				//
 				for (Element link : links) {
 
-					String match;
+					// System.out.println(link.toString());
+					//
+					// Match newMatch = new Match();
 
-					match = link.select("span").first().text().trim() + " vs "
-							+ link.select("span").get(2).text().trim() + " ";
-					if (link.getElementsByClass("results").isEmpty()) {
-						match += link.select("td").get(3).text().trim();
-						matches.add(match);
-					} else {
-						match += link.select("span.hidden").first().text()
-								.trim();
+					String match = link.select("span").get(0).text().trim()
+							+ " " + link.select("span").get(1).text().trim()
+							+ " " + link.select("span").get(2).text().trim()
+							+ " " + link.select("span").get(3).text().trim();
+
+					//
+					if (link.select("span").get(3).text().trim()
+							.matches("[0-9]:[0-9]")) {
 						results.add(match);
+					} else {
+						matches.add(match);
 					}
 				}
+				//
 
-			} else {
-				handleCancelView();
 			}
+
+			Collections.reverse(matches);
+
 		}
 
 		@Override
@@ -614,8 +690,11 @@ public class LoadMore_News extends LoadMore_Base implements
 
 			if (!taskCancel && result != null) {
 				// Do anything with response..
-				initViewPager();
-
+				try {
+					initViewPager();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				DisplayView(contentView, retryView, loadingView);
 
 			} else {
@@ -699,7 +778,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		} else {
 			mMatchInfo.execute(url);
 		}
-		
+
 		for (String s : API) {
 			LoadMoreTask newTask = new LoadMoreTask(LoadMoreTask.INITTASK,
 					myLoadMoreListView, listLoading, listRetry);
@@ -712,7 +791,6 @@ public class LoadMore_News extends LoadMore_Base implements
 			mLoadMoreTasks.add(newTask);
 
 		}
-
 
 	}
 

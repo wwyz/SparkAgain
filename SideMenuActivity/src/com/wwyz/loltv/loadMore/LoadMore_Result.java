@@ -39,7 +39,7 @@ public class LoadMore_Result extends LoadMore_Base {
 		abTitle = "Recent Results";
 
 		// Give API URLs
-		API.add("http://www.gosugamers.net/lol/gosubet");
+		API.add("http://www.in2lol.com/en/matches/");
 
 		pageNum = 1;
 
@@ -174,7 +174,11 @@ public class LoadMore_Result extends LoadMore_Base {
 			super.doInBackground(uri[0]);
 
 			if (!taskCancel && responseString != null) {
-				pullResults(responseString);
+				try{
+					pullResults(responseString);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 			// pullNews();
 			return responseString;
@@ -184,50 +188,75 @@ public class LoadMore_Result extends LoadMore_Base {
 			Document doc = Jsoup.parse(responseString);
 
 			Element box = null;
-			box = doc.select("div.box").get(2);
-
+			box = doc.select("div#main_left").get(0);
+			
+//			System.out.println(box.toString());
+			
 			if (box != null) {
-				links = box.select("tr:has(td.opp)");
 
-				Element paginator = box.select("div.paginator").first();
-
-				if (paginator == null) {
-					isMoreVideos = false;
-				} else {
-					if (paginator.select("a").last().hasAttr("class")) {
-						isMoreVideos = false;
-					} else {
-						isMoreVideos = true;
-						pageNum++;
-						API.add("http://www.gosugamers.net/lol/gosubet?r-page="
-								+ pageNum);
-					}
-				}
-
-				// Setting layout
-
+//				if (pageNum == 1) {
+//					Element box_1 = doc.select("div#main_left").first();
+//					links = box_1.select("tr:has(td.opp)");
+//					Elements upcoming_links = box_2.select("tr:has(td.opp)");
+//					links.addAll(upcoming_links);
+//				} else {
+//					links = box_2.select("tr:has(td.opp)");
+//				}
+//
+//				Element paginator = box_2.select("div.paginator").first();
+//
+//				if (paginator == null) {
+//					isMoreVideos = false;
+//				} else {
+//					if (paginator.select("a").last().hasAttr("class")) {
+//						isMoreVideos = false;
+//					} else {
+//						isMoreVideos = true;
+//						pageNum++;
+//						API.add("http://www.gosugamers.net/lol/gosubet?u-page="
+//								+ pageNum);
+//					}
+//				}
+//
+//				// Setting layout
+				
+				isMoreVideos = false;
+				
+				links = box.select("a.item");
+				
+//
 				for (Element link : links) {
+					
+//					System.out.println(link.toString());
 
 					Match newMatch = new Match();
-					Element opp_1 = link.select("td.opp").first();
-					Element opp_2 = link.select("td.opp").get(1);
 
-					newMatch.setTeamName1(opp_1.select("span").first().text()
-							.trim());
-					newMatch.setTeamName2(opp_2.select("span").first().text()
-							.trim());
+					Element opp_1 = link.select("span").get(1);
+					Element opp_2 = link.select("span").get(3);
 
-					newMatch.setTeamIcon1(baseUrl
-							+ opp_1.select("img").attr("src"));
-					newMatch.setTeamIcon2(baseUrl
-							+ opp_2.select("img").attr("src"));
+					newMatch.setTeamName1(opp_1.text().trim());
+					newMatch.setTeamName2(opp_2.text().trim());
 
-					newMatch.setScore(link.select("span.hidden").first().text()
-							.trim());
+					newMatch.setTeamIcon1(opp_1.select("img").attr("src"));
+					newMatch.setTeamIcon2(opp_2.select("img").attr("src"));
 
-					newMatch.setGosuLink(baseUrl
-							+ opp_1.select("a[href]").attr("href"));
+					newMatch.setTime(link.select("span").get(2).text().trim());
+					
+					if (!newMatch.getTime().matches("[0-9]:[0-9]")){
+//							System.out.println(newMatch.getTime());
+//							System.out.println("Yes");
+							continue;
+					}
+					
+					newMatch.setScore(newMatch.getTime());
+					
+					newMatch.setGosuLink(link.attr("href"));
 
+//					if (newMatch.getTime().toLowerCase().matches("live")) {
+//						newMatch.setMatchStatus(Match.LIVE);
+//					} else
+//						newMatch.setMatchStatus(Match.NOTSTARTED);
+					
 					newMatch.setMatchStatus(Match.ENDED);
 
 					matchArray.add(newMatch);

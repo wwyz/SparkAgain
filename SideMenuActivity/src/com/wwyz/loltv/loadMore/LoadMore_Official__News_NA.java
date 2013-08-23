@@ -252,7 +252,11 @@ public class LoadMore_Official__News_NA extends LoadMore_Base {
 			super.doInBackground(uri[0]);
 
 			if (!taskCancel && responseString != null) {
-				pullNews(responseString);
+				try{
+					pullNews(responseString);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 			// pullNews();
 			return responseString;

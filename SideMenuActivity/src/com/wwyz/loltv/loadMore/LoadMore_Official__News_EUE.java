@@ -252,7 +252,11 @@ public class LoadMore_Official__News_EUE extends LoadMore_Base {
 			super.doInBackground(uri[0]);
 
 			if (!taskCancel && responseString != null) {
-				pullNews(responseString);
+				try{
+					pullNews(responseString);
+				}catch (Exception e){
+					e.printStackTrace();
+				}
 			}
 			// pullNews();
 			return responseString;
@@ -270,7 +274,7 @@ public class LoadMore_Official__News_EUE extends LoadMore_Base {
 				String newsTitle = "";
 				String newsSubtitle = "";
 				String date = "";
-				System.out.println("Number of News: " + links.size());
+//				System.out.println("Number of News: " + links.size());
 				for (Element link : links) {
 
 					// get the value from href attribute

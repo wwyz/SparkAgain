@@ -12,12 +12,7 @@ public class FeedManager_Subscription extends FeedManager_Base {
 
 	@Override
 	public ArrayList<Video> getVideoPlaylist() {
-		try {
-			processJSON(mJSON);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		}
+		processJSON(mJSON);
 		ArrayList<Video> videos = new ArrayList<Video>();
 
 		try {
@@ -84,7 +79,7 @@ public class FeedManager_Subscription extends FeedManager_Base {
 				// System.out.println(videoTitle+"***"+videoLink);
 			}
 
-		} catch (JSONException ex) {
+		} catch (Exception ex) {
 
 			//ex.printStackTrace();
 		}

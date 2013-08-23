@@ -34,12 +34,12 @@ public class FeedManager_Twitch extends FeedManager_Base {
 				String videoDesc = "No Desc";
 				String thumbUrl = oneVideo.getJSONObject("preview").getString(
 						"medium");
-				//String updateTime = videoChannel.getString("updated_at");
+				// String updateTime = videoChannel.getString("updated_at");
 				String author = videoChannel.getString("display_name");
-				
+
 				// Get the number of viewers
 				String numberOfViewers = oneVideo.getString("viewers");
-				
+
 				// System.out.println("Stream ID: " + videoId);
 				// store title and link
 
@@ -49,18 +49,17 @@ public class FeedManager_Twitch extends FeedManager_Base {
 				video.setAuthor(author);
 				video.setThumbnailUrl(thumbUrl);
 				video.setVideoDesc(videoDesc);
-				//video.setUpdateTime(updateTime);
+				// video.setUpdateTime(updateTime);
 				video.setViewCount(numberOfViewers);
-				
-				
+
 				// push it to the list
 				videos.add(video);
 				// System.out.println(videoTitle+"***"+videoLink);
 
 			}
-		} catch (JSONException ex) {
+		} catch (Exception ex) {
 
-			//ex.printStackTrace();
+			// ex.printStackTrace();
 		}
 
 		return videos;
@@ -72,12 +71,16 @@ public class FeedManager_Twitch extends FeedManager_Base {
 	}
 
 	@Override
-	protected void processJSON(String json) throws JSONException {
+	protected void processJSON(String json) {
 		// TODO Auto-generated method stub
-		twtichNextApi = null;
-		JSONTokener jsonParser = new JSONTokener(json);
-		feed = (JSONObject) jsonParser.nextValue();
-		twtichNextApi = feed.getJSONObject("_links").getString("next");
+		try {
+			twtichNextApi = null;
+			JSONTokener jsonParser = new JSONTokener(json);
+			feed = (JSONObject) jsonParser.nextValue();
+			twtichNextApi = feed.getJSONObject("_links").getString("next");
+		} catch (Exception e) {
+
+		}
 	}
 
 }
