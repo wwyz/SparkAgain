@@ -809,7 +809,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		// myThread.interrupt();
 
 		if (handler != null) {
-			handler.removeCallbacks(runnable);
+			handler.removeCallbacksAndMessages(null);
 		}
 
 		if (mMatchInfo != null && mMatchInfo.getStatus() == Status.RUNNING)
