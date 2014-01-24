@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.TimeZone;
 
 import org.jsoup.Jsoup;
@@ -14,13 +15,18 @@ import org.jsoup.select.Elements;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,17 +40,19 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.ShareActionProvider;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.wwyz.loltv.data.Match;
+import com.wwyz.loltv.notification.AlarmService;
 
 public class MatchDetailsActivity extends SherlockListActivity {
 
 	private ActionBar mActionBar;
 	private Match match;
-//	private String baseUrl = "http://www.gosugamers.net";
+	// private String baseUrl = "http://www.gosugamers.net";
 	protected View fullscreenLoadingView;
 	private Activity mActivity;
 	private ImageLoader imageLoader = ImageLoader.getInstance();
@@ -56,6 +64,12 @@ public class MatchDetailsActivity extends SherlockListActivity {
 	private TextView myTimer;
 	private View contentLayout;
 	private getMatchDetails mMatchDetails;
+	private Date gameStartDate;
+	private Random rand;
+	private int mRandNum;
+	private String tName1;
+	private String tName2;
+	private SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,16 +108,22 @@ public class MatchDetailsActivity extends SherlockListActivity {
 
 		mMatchDetails.execute(match.getGosuLink());
 
+		rand = new Random();
+		mRandNum = rand.nextInt(50000);
+
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		menu.add(0, 0, 0, "Refresh")
-				.setIcon(R.drawable.ic_refresh)
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_IF_ROOM
-								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+		menu.add(0, 0, 1, "").setIcon(R.drawable.ic_refresh)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+		if (match.getMatchStatus() == Match.NOTSTARTED) {
+			menu.add(0, 1, 0, "").setIcon(R.drawable.ic_action_bell)
+					.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		}
 
 		getSupportMenuInflater().inflate(R.menu.share_action_provider, menu);
 
@@ -131,13 +151,11 @@ public class MatchDetailsActivity extends SherlockListActivity {
 		if (match.getMatchStatus() == Match.NOTSTARTED) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT,
 					match.getTeamName1() + " vs " + match.getTeamName2()
-							+ " will start " + match.getTime()
-							+ " later");
+							+ " will start " + match.getTime() + " later");
 		} else if (match.getMatchStatus() == Match.LIVE) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, match.getTeamName1()
-					+ " vs " + match.getTeamName2()
-					+ " is live now");
-		} else if (match.getMatchStatus() == Match.ENDED){
+					+ " vs " + match.getTeamName2() + " is live now");
+		} else if (match.getMatchStatus() == Match.ENDED) {
 			shareIntent.putExtra(Intent.EXTRA_TEXT, match.getTeamName1() + " "
 					+ match.getScore() + " " + match.getTeamName2());
 
@@ -157,48 +175,142 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			refreshActivity();
 		}
 
+		if (item.getItemId() == 1) {
+			try {
+				// Setting up notification
+				// Date currentDate = new Date();
+				long dateInMill = gameStartDate.getTime();
+				// Log.i("debug cur/star/diff",
+				// Long.toString(currentDate.getTime()) + "/"
+				// + Long.toString(dateInMill) + "/"
+				// + Long.toString(dateInMill - currentDate.getTime()));
+				String msg = tName1 + " vs " + tName2;
+
+				// Create an instance of AlarmService
+				AlarmService as = new AlarmService(this, msg, mRandNum);
+				as.startAlarm(dateInMill);
+
+				Toast.makeText(this,
+						"You will get notified when the match starts.",
+						Toast.LENGTH_LONG).show();
+			} catch (Exception e) {
+				Toast.makeText(this, "Loading data, please try again later.",
+						Toast.LENGTH_LONG).show();
+			}
+		}
+
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		
+	protected void onListItemClick(ListView l, View v, final int position,
+			long id) {
+
 		System.out.println(lives.get(position));
 
 		super.onListItemClick(l, v, position, id);
 
-//		if (match.getMatchStatus() == Match.ENDED) {
-//			Intent i = new Intent(this, YoutubeActionBarActivity.class);
-//			// Toast.makeText(this, videoIds.get(position), Toast.LENGTH_SHORT)
-//			// .show();
-//
-//			i.putExtra("isfullscreen", true);
-//			i.putExtra("videoId", videoIds.get(position));
-//			startActivity(i);
-//		} else {
-		
-		
-		if (lives.get(position).endsWith("LCS")){
-			
-			System.out.println("match");
-		
-			System.out.println(lives.get(position));
-			
-			if (check()) {
-				Intent i = new Intent(this, TwitchPlayer.class);
-				i.putExtra("video", "riotgames");
-				startActivity(i);
+		// if (match.getMatchStatus() == Match.ENDED) {
+		// Intent i = new Intent(this, YoutubeActionBarActivity.class);
+		// // Toast.makeText(this, videoIds.get(position), Toast.LENGTH_SHORT)
+		// // .show();
+		//
+		// i.putExtra("isfullscreen", true);
+		// i.putExtra("videoId", videoIds.get(position));
+		// startActivity(i);
+		// } else {
+
+		if (lives.get(position).endsWith("LCS")) {
+
+			// Getting the preferred player
+			String preferredPlayer = prefs.getString("preferredPlayer", "-1");
+			// Log.i("debug prefs", preferredPlayer);
+			final Context mContext = this;
+			if (preferredPlayer.equals("-1")) {
+				// No preference
+				final CharSequence[] colors_radio = {
+						"New Player(No flash needed)",
+						"Old Player(Flash needed)" };
+
+				new AlertDialog.Builder(this)
+						.setSingleChoiceItems(colors_radio, 0, null)
+						.setPositiveButton("Just once",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										dialog.dismiss();
+										int selectedPosition = ((AlertDialog) dialog)
+												.getListView()
+												.getCheckedItemPosition();
+										// Do something useful withe the
+										// position of
+										// the selected radio button
+										openPlayer(selectedPosition, mContext,
+												position, false);
+									}
+								})
+						.setNegativeButton("Always",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										dialog.dismiss();
+										int selectedPosition = ((AlertDialog) dialog)
+												.getListView()
+												.getCheckedItemPosition();
+										// Do something useful withe the
+										// position of
+										// the selected radio button
+										openPlayer(selectedPosition, mContext,
+												position, true);
+
+									}
+								}).show();
 			} else {
-				Intent i = new Intent(this, FlashInstallerActivity.class);
-				startActivity(i);
+				// Got preferred player
+				openPlayer(Integer.parseInt(preferredPlayer), mContext,
+						position, false);
 			}
-		}
-		else{
+		} else {
 			Intent i = new Intent(Intent.ACTION_VIEW);
 			i.setData(Uri.parse(lives.get(position)));
 			startActivity(i);
 		}
 
+	}
+
+	private void openPlayer(int selectedPosition, Context mContext,
+			int videoPostion, boolean isSave) {
+		switch (selectedPosition) {
+		case 0:
+			// save pref
+			if (isSave) {
+				prefs.edit().putString("preferredPlayer", "0").commit();
+			}
+			// Using new video player
+			Intent i = new Intent(mContext, VideoBuffer.class);
+			i.putExtra("video", lives.get(videoPostion));
+			startActivity(i);
+			break;
+
+		case 1:
+			// save pref
+			if (isSave) {
+				prefs.edit().putString("preferredPlayer", "1").commit();
+			}
+
+			// Using old player
+			if (check()) {
+				Intent intent1 = new Intent(mContext, TwitchPlayer.class);
+				intent1.putExtra("video", lives.get(videoPostion));
+				startActivity(intent1);
+
+			} else {
+				Intent intent2 = new Intent(mContext,
+						FlashInstallerActivity.class);
+				startActivity(intent2);
+			}
+			break;
+		}
 	}
 
 	public void initMatchView() {
@@ -207,6 +319,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 
 	private class getMatchDetails extends MyAsyncTask {
 		Document doc;
+
 		public getMatchDetails(int type, View contentView, View loadingView,
 				View retryView) {
 			super(type, contentView, loadingView, retryView);
@@ -231,6 +344,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			});
 
 		}
+
 		@Override
 		public String doInBackground(String... uri) {
 
@@ -242,7 +356,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 
 			return responseString;
 		}
-		
+
 		@Override
 		protected void onPostExecute(String result) {
 			// Checking network status first
@@ -250,168 +364,178 @@ public class MatchDetailsActivity extends SherlockListActivity {
 
 			if (!taskCancel && result != null) {
 
-//				Element opp_1 = null;
-				
+				// Element opp_1 = null;
+
 				Element box = doc.select("div#main_left").first();
 				Element matchHead = doc.select("div.match_head").first();
 				Element submatch = doc.select("div.submatches").first();
-				
+
 				Elements submatches = submatch.select("div.submatch");
-//
-//				opp_1 = doc.select("div.opponent").first();
-//
-//				if (opp_1 != null) {
-//
-//					Element opp_2 = doc.select("div.opponent").get(1);
-//
-//					Element scoreDiv_1 = doc.select("div[class=center-column]")
-//							.first().select("div").get(1);
-//
-//					Element scoreDiv_2 = doc.select("div[class=center-column]")
-//							.first().select("div").get(2);
-//
-//					Element details = doc.select("table#match-details").first();
-//
-//					Elements flash = doc.select("object");
-//
-//					Elements videos = doc.select("div[class^=video]");
-//
-//					if (match.getMatchStatus() != Match.ENDED) {
-//						if (!flash.isEmpty())
-//							for (Element f : flash) {
-//								if (!flash.isEmpty()) {
-//									String data = f.attr("data");
-//									String mData = data.substring(
-//											data.indexOf("=") + 1,
-//											data.length());
-//									// String pattern = "(.*?)=(.*?)";
-//									// data.replace(pattern, "$2");
-//									lives.add(mData);
-//								}
-//							}
-//					} else {
-//						if (!videos.isEmpty()) {
-//							for (Element v : videos) {
-//								String imgurl = v.select("img").first()
-//										.attr("src");
-//								String title = v.select("a").first()
-//										.attr("data-dialog-title");
-//								String mImgurl = imgurl.replaceAll(
-//										"https://i1.ytimg.com/vi/(.*?)/(.*)",
-//										"$1");
-//								// System.out.println("url: "+ mImgurl);
-//								lives.add(title);
-//								videoIds.add(mImgurl);
-//							}
-//						}
-//
-//					}
-				
-					Element scoreBox = box.select("div.score").first();
-//
-					myTimer = (TextView) findViewById(R.id.myTimer);
+				//
+				// opp_1 = doc.select("div.opponent").first();
+				//
+				// if (opp_1 != null) {
+				//
+				// Element opp_2 = doc.select("div.opponent").get(1);
+				//
+				// Element scoreDiv_1 = doc.select("div[class=center-column]")
+				// .first().select("div").get(1);
+				//
+				// Element scoreDiv_2 = doc.select("div[class=center-column]")
+				// .first().select("div").get(2);
+				//
+				// Element details = doc.select("table#match-details").first();
+				//
+				// Elements flash = doc.select("object");
+				//
+				// Elements videos = doc.select("div[class^=video]");
+				//
+				// if (match.getMatchStatus() != Match.ENDED) {
+				// if (!flash.isEmpty())
+				// for (Element f : flash) {
+				// if (!flash.isEmpty()) {
+				// String data = f.attr("data");
+				// String mData = data.substring(
+				// data.indexOf("=") + 1,
+				// data.length());
+				// // String pattern = "(.*?)=(.*?)";
+				// // data.replace(pattern, "$2");
+				// lives.add(mData);
+				// }
+				// }
+				// } else {
+				// if (!videos.isEmpty()) {
+				// for (Element v : videos) {
+				// String imgurl = v.select("img").first()
+				// .attr("src");
+				// String title = v.select("a").first()
+				// .attr("data-dialog-title");
+				// String mImgurl = imgurl.replaceAll(
+				// "https://i1.ytimg.com/vi/(.*?)/(.*)",
+				// "$1");
+				// // System.out.println("url: "+ mImgurl);
+				// lives.add(title);
+				// videoIds.add(mImgurl);
+				// }
+				// }
+				//
+				// }
 
-					ImageView icon_1 = (ImageView) findViewById(R.id.icon1);
-					ImageView icon_2 = (ImageView) findViewById(R.id.icon2);
+				Element scoreBox = box.select("div.score").first();
+				//
+				myTimer = (TextView) findViewById(R.id.myTimer);
 
-					TextView teamName_1 = (TextView) findViewById(R.id.tName1);
-					TextView teamName_2 = (TextView) findViewById(R.id.tName2);
+				ImageView icon_1 = (ImageView) findViewById(R.id.icon1);
+				ImageView icon_2 = (ImageView) findViewById(R.id.icon2);
 
-					TextView team1score = (TextView) findViewById(R.id.team1score);
-					TextView team2score = (TextView) findViewById(R.id.team2score);
+				TextView teamName_1 = (TextView) findViewById(R.id.tName1);
+				TextView teamName_2 = (TextView) findViewById(R.id.tName2);
 
-					TextView tournamentName = (TextView) findViewById(R.id.tournamentName);
-					TextView format = (TextView) findViewById(R.id.format);
-					TextView startTime = (TextView) findViewById(R.id.startTime);
-					TextView liveLabel = (TextView) findViewById(R.id.livelabel);
-					TextView noLive = (TextView) findViewById(R.id.nolive);
-					TextView liveStatus = (TextView) findViewById(R.id.liveStatus);
-//
-					teamName_1.setText(box.select("div.team").first().text().trim());
-					teamName_2.setText(box.select("div.team").get(1).text().trim());
-					
-					if (match.getMatchStatus() == Match.ENDED){
-//
-						if (scoreBox.select("span").first().className().trim().endsWith("ticker_score_win")) {
-							team1score.setTextColor(Color.RED);
-						}
-						team1score.setText(scoreBox.select("span").first().text().trim());
-//
-						if (scoreBox.select("span").get(1).className().trim().endsWith("ticker_score_win")) {
-							team2score.setTextColor(Color.RED);
-						}
-						team2score.setText(scoreBox.select("span").get(1).text().trim());
+				TextView team1score = (TextView) findViewById(R.id.team1score);
+				TextView team2score = (TextView) findViewById(R.id.team2score);
+
+				TextView tournamentName = (TextView) findViewById(R.id.tournamentName);
+				TextView format = (TextView) findViewById(R.id.format);
+				TextView startTime = (TextView) findViewById(R.id.startTime);
+				TextView liveLabel = (TextView) findViewById(R.id.livelabel);
+				TextView noLive = (TextView) findViewById(R.id.nolive);
+				TextView liveStatus = (TextView) findViewById(R.id.liveStatus);
+
+				tName1 = box.select("div.team").first().text().trim();
+				tName2 = box.select("div.team").get(1).text().trim();
+				teamName_1.setText(tName1);
+				teamName_2.setText(tName2);
+
+				if (match.getMatchStatus() == Match.ENDED) {
+					//
+					if (scoreBox.select("span").first().className().trim()
+							.endsWith("ticker_score_win")) {
+						team1score.setTextColor(Color.RED);
 					}
-//
-					imageLoader.displayImage(box.select("div.team_logo").first().select("img").first().attr("src"), icon_1,
-							options, animateFirstListener);
-//
-					imageLoader.displayImage(box.select("div.team_logo").get(1).select("img").first().attr("src"), icon_2,
-							options, animateFirstListener);
-					
-					tournamentName.setText("Tournament: " + matchHead.select("div.left").first().text().trim());
-					format.setText("Format: Best of "+ submatches.size());					
-					String dateInString = matchHead.select("div.right").first().text().trim();
-					startTime.setText("Start Time: " + processDate(dateInString) + " (Your place)");
-//
-//					Elements detailTd = details.select("td");
-//
-//					if (detailTd.size() == 4) {
-//
-//						tournamentName.setText("Tournament: "
-//								+ detailTd.get(2).text().trim());
-//						format.setText("Format: Best of "
-//								+ detailTd.get(3).text().trim());
-//						String dateInString = detailTd.first().text().trim();
-//						startTime.setText("Start Time: "
-//								+ processDate(dateInString) + " (Your place)");
-//
-//					} else {
-//						tournamentName.setText("Tournament: "
-//								+ detailTd.get(1).text().trim());
-//						format.setText("Format: Best of "
-//								+ detailTd.get(2).text().trim());
-//						startTime.setText("Start Time: ");
-//					}
-//
-					if (match.getMatchStatus() == Match.LIVE) {
-						liveStatus.setVisibility(View.VISIBLE);
-					} else if (match.getMatchStatus() == Match.NOTSTARTED) {
-						myTimer.setText(match.getTime());
-						myTimer.setVisibility(View.VISIBLE);
+					team1score.setText(scoreBox.select("span").first().text()
+							.trim());
+					//
+					if (scoreBox.select("span").get(1).className().trim()
+							.endsWith("ticker_score_win")) {
+						team2score.setTextColor(Color.RED);
 					}
-					
-					Elements ul = box.select("ul.related").first().select("a");
-					
-					for (Element a : ul) {
-						lives.add(a.attr("href"));
-						videoIds.add(a.text());
-					}
+					team2score.setText(scoreBox.select("span").get(1).text()
+							.trim());
+				}
+				//
+				imageLoader.displayImage(box.select("div.team_logo").first()
+						.select("img").first().attr("src"), icon_1, options,
+						animateFirstListener);
+				//
+				imageLoader.displayImage(box.select("div.team_logo").get(1)
+						.select("img").first().attr("src"), icon_2, options,
+						animateFirstListener);
 
-					
-//
-//					if (match.getMatchStatus() == Match.ENDED) {
-//						noLive.setText("No Videos Released Yet.");
-//						liveLabel.setText("VODs");
-//					}
-//
-					if (lives.isEmpty()) {
-						liveLabel.setVisibility(View.GONE);
-						noLive.setVisibility(View.VISIBLE);
-					} else {
-//
-						ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-								mActivity, android.R.layout.simple_list_item_1,
-								videoIds);
+				tournamentName.setText("Tournament: "
+						+ matchHead.select("div.left").first().text().trim());
+				format.setText("Format: Best of " + submatches.size());
+				String dateInString = matchHead.select("div.right").first()
+						.text().trim();
+				startTime.setText("Start Time: " + processDate(dateInString)
+						+ " (Your place)");
+				//
+				// Elements detailTd = details.select("td");
+				//
+				// if (detailTd.size() == 4) {
+				//
+				// tournamentName.setText("Tournament: "
+				// + detailTd.get(2).text().trim());
+				// format.setText("Format: Best of "
+				// + detailTd.get(3).text().trim());
+				// String dateInString = detailTd.first().text().trim();
+				// startTime.setText("Start Time: "
+				// + processDate(dateInString) + " (Your place)");
+				//
+				// } else {
+				// tournamentName.setText("Tournament: "
+				// + detailTd.get(1).text().trim());
+				// format.setText("Format: Best of "
+				// + detailTd.get(2).text().trim());
+				// startTime.setText("Start Time: ");
+				// }
+				//
+				if (match.getMatchStatus() == Match.LIVE) {
+					liveStatus.setVisibility(View.VISIBLE);
+				} else if (match.getMatchStatus() == Match.NOTSTARTED) {
+					myTimer.setText(match.getTime());
+					myTimer.setVisibility(View.VISIBLE);
+				}
 
-						setListAdapter(adapter);
-					}
-//
-					DisplayView(contentView, retryView, loadingView);
-//
-//				} else {
-//					handleCancelView();
-//				}
+				Elements ul = box.select("ul.related").first().select("a");
+
+				for (Element a : ul) {
+					lives.add(a.attr("href"));
+					videoIds.add(a.text());
+				}
+
+				//
+				// if (match.getMatchStatus() == Match.ENDED) {
+				// noLive.setText("No Videos Released Yet.");
+				// liveLabel.setText("VODs");
+				// }
+				//
+				if (lives.isEmpty()) {
+					liveLabel.setVisibility(View.GONE);
+					noLive.setVisibility(View.VISIBLE);
+				} else {
+					//
+					ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+							mActivity, android.R.layout.simple_list_item_1,
+							videoIds);
+
+					setListAdapter(adapter);
+				}
+				//
+				DisplayView(contentView, retryView, loadingView);
+				//
+				// } else {
+				// handleCancelView();
+				// }
 
 			} else {
 
@@ -443,6 +567,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
+		gameStartDate = date;
 
 		sdf = new SimpleDateFormat("MMMM d 'at' hh:mm a");
 		sdf.setTimeZone(TimeZone.getDefault());
@@ -455,7 +580,7 @@ public class MatchDetailsActivity extends SherlockListActivity {
 		// Destroy current activity
 		finish();
 
-//		Toast.makeText(mActivity, "Refreshing", Toast.LENGTH_SHORT).show();
+		// Toast.makeText(mActivity, "Refreshing", Toast.LENGTH_SHORT).show();
 
 		// Start a new activity
 		Intent i = new Intent(mActivity, MatchDetailsActivity.class);

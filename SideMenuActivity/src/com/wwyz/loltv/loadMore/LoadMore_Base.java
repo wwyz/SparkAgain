@@ -190,7 +190,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
 		myLoadMoreListView.setDivider(null);		
 		
-		setBannerInHeader();
+//		setBannerInHeader();
 		
 		vaa = new VideoArrayAdapter(sfa, titles, videolist, imageLoader);
 		setListAdapter(vaa);
@@ -304,7 +304,7 @@ public class LoadMore_Base extends SherlockListFragment implements
 
 		Intent i = new Intent(this.getSherlockActivity(),
 				YoutubeActionBarActivity.class);
-		i.putExtra("video", videolist.get(position-1));
+		i.putExtra("video", videolist.get(position));
 		startActivity(i);
 
 	}

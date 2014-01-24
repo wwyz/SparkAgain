@@ -1,12 +1,7 @@
 package com.wwyz.loltv.loadMore;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,7 +15,6 @@ import android.os.Build;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.costum.android.widget.LoadMoreListView;
 import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
@@ -73,7 +67,7 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
 		myLoadMoreListView.setDivider(null);
 
-		setBannerInHeader();
+//		setBannerInHeader();
 
 		mArrayAdatper = new MatchArrayAdapter(sfa, matchArray, imageLoader,
 				false);
@@ -125,7 +119,7 @@ public class LoadMore_UpcomingMatch extends LoadMore_Base {
 
 		Intent i = new Intent(this.getSherlockActivity(),
 				MatchDetailsActivity.class);
-		i.putExtra("match", matchArray.get(position - 1));
+		i.putExtra("match", matchArray.get(position));
 		startActivity(i);
 
 	}

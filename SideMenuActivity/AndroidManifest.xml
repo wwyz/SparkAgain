@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wwyz.loltv"
     android:installLocation="auto"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    android:versionCode="3"
+    android:versionName="1.0.2" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,7 +11,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
     <permission
         android:name="com.example.gcm.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -88,7 +89,23 @@
             android:name="com.wwyz.loltv.loadMore.LoadMore_Activity_Search_Twitch"
             android:label="@string/app_name" >
         </activity>
-
+		<activity
+            android:name="com.wwyz.loltv.VideoBuffer"
+            android:label="@string/app_name" 
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="landscape">
+        </activity>
+        
+		<activity
+            android:name="io.vov.vitamio.activity.InitActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+		
+		
+		<receiver android:process=":remote" android:name="com.wwyz.loltv.notification.AlarmReceiver"></receiver>
         <receiver
             android:name="com.wwyz.loltv.MyBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >
@@ -98,7 +115,8 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
-
+        
+		<service android:enabled="true" android:name="com.wwyz.loltv.notification.NotificationService" />
         <service android:name="com.wwyz.loltv.MyIntentService" />
     </application>
 

@@ -91,11 +91,15 @@ public class MatchArrayAdapter extends ArrayAdapter<Match> {
 		}
 
 		if (!isResult) {
-			if (matches.get(position).getMatchStatus() == Match.LIVE)
+			if (matches.get(position).getMatchStatus() == Match.LIVE){
 				holder.time.setTextColor(Color.RED);
-			else
+				holder.time.setText("Live");
+			}
+			else{
 				holder.time.setTextColor(Color.BLACK);
-			holder.time.setText(matches.get(position).getTime());
+				holder.time.setText(matches.get(position).getTime());
+			}
+			
 		} else
 			holder.score.setText(matches.get(position).getScore());
 

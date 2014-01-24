@@ -66,7 +66,7 @@ public class LoadMore_Result extends LoadMore_Base {
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
 		myLoadMoreListView.setDivider(null);
 
-		setBannerInHeader();
+//		setBannerInHeader();
 
 		mArrayAdatper = new MatchArrayAdapter(sfa, matchArray, imageLoader,
 				true);
@@ -118,7 +118,7 @@ public class LoadMore_Result extends LoadMore_Base {
 
 		Intent i = new Intent(this.getSherlockActivity(),
 				MatchDetailsActivity.class);
-		i.putExtra("match", matchArray.get(position - 1));
+		i.putExtra("match", matchArray.get(position));
 		startActivity(i);
 
 	}

@@ -37,7 +37,7 @@ public class TwitchPlayer extends Activity {
 	private String video;
 	private String ua;
 	private View loadingIndicator;
-	private boolean doubleBackToExitPressedOnce = false;
+//	private boolean doubleBackToExitPressedOnce = false;
 	
 	private SharedPreferences prefs;
 	private SharedPreferences.Editor editor;
@@ -377,29 +377,29 @@ public class TwitchPlayer extends Activity {
 		mWebChat.onResume();
 	}
 
-	@Override
-	public void onBackPressed() {
-
-		// No fragment in back stack
-		if (doubleBackToExitPressedOnce) {
-			super.onBackPressed();
-			return;
-		}
-		this.doubleBackToExitPressedOnce = true;
-		Toast.makeText(this, "Please click BACK again to exit the stream",
-				Toast.LENGTH_SHORT).show();
-
-		// reset doubleBackToExitPressedOnce to false after 2 seconds
-		new Handler().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				doubleBackToExitPressedOnce = false;
-
-			}
-		}, 2000);
-
-	}
+//	@Override
+//	public void onBackPressed() {
+//
+//		// No fragment in back stack
+//		if (doubleBackToExitPressedOnce) {
+//			super.onBackPressed();
+//			return;
+//		}
+//		this.doubleBackToExitPressedOnce = true;
+//		Toast.makeText(this, "Please click BACK again to exit the stream",
+//				Toast.LENGTH_SHORT).show();
+//
+//		// reset doubleBackToExitPressedOnce to false after 2 seconds
+//		new Handler().postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				doubleBackToExitPressedOnce = false;
+//
+//			}
+//		}, 2000);
+//
+//	}
 	
 
 }

@@ -23,11 +23,15 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.ads.Ad;
+import com.google.ads.AdListener;
+import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
+import com.google.ads.InterstitialAd;
 import com.wwyz.loltv.adapters.EntryAdapter;
 import com.wwyz.loltv.data.EntryItem;
 import com.wwyz.loltv.data.Item;
 import com.wwyz.loltv.data.SectionItem;
-import com.wwyz.loltv.loadMore.LoadMore_Gosu_News;
 import com.wwyz.loltv.loadMore.LoadMore_H_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_M_Subscription;
 import com.wwyz.loltv.loadMore.LoadMore_News;
@@ -37,7 +41,8 @@ import com.wwyz.loltv.loadMore.LoadMore_Twitch;
 import com.wwyz.loltv.loadMore.LoadMore_UpcomingMatch;
 import com.wwyz.loltv.setting.SettingsActivity;
 
-public class SideMenuActivity extends SherlockFragmentActivity {
+public class SideMenuActivity extends SherlockFragmentActivity implements
+		AdListener {
 
 	// Declare Variable
 	DrawerLayout mDrawerLayout;
@@ -50,13 +55,27 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 	protected Fragment currentFragment;
 
 	private FragmentManager fm;
+	private InterstitialAd interstitial;
 
-	private boolean doubleBackToExitPressedOnce = false;
+	// private boolean doubleBackToExitPressedOnce = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.drawer_main);
+
+		// Create the interstitial
+		interstitial = new InterstitialAd(this,
+				"ca-app-pub-6718707824713684/7044395053");
+
+		// Create ad request
+		AdRequest adRequest = new AdRequest();
+		adRequest.addTestDevice("5E4CA696BEB736E734DD974DD296F11A");
+		// Begin loading your interstitial
+		interstitial.loadAd(adRequest);
+
+		// Set Ad Listener to use the callbacks below
+		interstitial.setAdListener(this);
 
 		// Initial fragment manager
 		fm = this.getSupportFragmentManager();
@@ -78,12 +97,12 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		// Pass results to MenuListAdapter Class
 		// mMenuAdapter = new MenuListAdapter(this, title, subtitle, icon);
 		items.add(new SectionItem("Everyday's Feed"));
-		items.add(new EntryItem("What's new", "Your daily dose of LoL",
+		items.add(new EntryItem("What's new", "Your daily LoL",
 				R.drawable.fresh_meat));
-		
+
 		items.add(new EntryItem("Latest News", "From official website",
 				R.drawable.ic_action_news));
-		
+
 		items.add(new EntryItem("Forums", "Chat with others",
 				R.drawable.ic_action_forum));
 
@@ -94,7 +113,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				R.drawable.swords));
 
 		items.add(new SectionItem("Lives"));
-		items.add(new EntryItem("Twitch Streams", "Battle begins!",
+		items.add(new EntryItem("Twitch Streams", "The battle begins!",
 				R.drawable.live));
 
 		items.add(new SectionItem("Match Table"));
@@ -107,11 +126,12 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		items.add(new SectionItem("About App"));
 		items.add(new EntryItem("Feedback", "Help us make it better",
 				R.drawable.feedback));
-		
-		items.add(new EntryItem("Share", "Share our app", R.drawable.ic_action_social_share));
-		items.add(new EntryItem("Rate LoL Daily", "Like it?", R.drawable.ic_action_rating_good));
-		
-		
+
+		items.add(new EntryItem("Share", "Share our app",
+				R.drawable.ic_action_social_share));
+		items.add(new EntryItem("Rate LoL TV", "Like it?",
+				R.drawable.ic_action_rating_good));
+
 		eAdapter = new EntryAdapter(this, items);
 
 		// setListAdapter(adapter);
@@ -182,14 +202,13 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				}, 0);
 			}
 		}
-		
-		if(item.getItemId() == R.id.menu_settings){
-			
+
+		if (item.getItemId() == R.id.menu_settings) {
+
 			// Start setting activity
-			Intent i = new Intent(this,
-					SettingsActivity.class);
+			Intent i = new Intent(this, SettingsActivity.class);
 			startActivity(i);
-			
+
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -230,7 +249,7 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 				mDrawerLayout.closeDrawer(mDrawerList);
 			}
 		}, 0);
-		
+
 		currentItem = position;
 
 		switch (position) {
@@ -240,13 +259,13 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			currentFragment = new LoadMore_News();
 			ft.replace(R.id.content_frame, currentFragment);
 			break;
-			
+
 		case 2:
 			// Gosu news
 			currentFragment = new LoadMore_Official__News_NA();
 			ft.replace(R.id.content_frame, currentFragment);
 			break;
-			
+
 		case 3:
 			// Gosu news
 			currentFragment = new Forum_reddit();
@@ -282,44 +301,53 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 			currentFragment = new LoadMore_Result();
 			ft.replace(R.id.content_frame, currentFragment);
 			break;
-			
+
 		case 13:
 			// Feedback
 
 			Intent email = new Intent(Intent.ACTION_VIEW);
-			email.setData(Uri.parse("mailto:my.loltv1@gmail.com?subject=LoL Daily Feedback"));
+			email.setData(Uri
+					.parse("mailto:my.loltv1@gmail.com?subject=LoL TV Feedback"));
 			startActivity(Intent.createChooser(email, "Send feedback via.."));
-//			startActivity(email);
+			// startActivity(email);
 			break;
-			
+
 		case 14:
 			// Share Dota2TV
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
-			sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.wwyz.loltv");
+			sendIntent
+					.putExtra(Intent.EXTRA_TEXT,
+							"https://play.google.com/store/apps/details?id=com.wwyz.loltv");
 			sendIntent.setType("text/plain");
-			startActivity(Intent.createChooser(sendIntent, "Share LoLTV via.."));
-//			startActivity(sendIntent);
+			startActivity(Intent
+					.createChooser(sendIntent, "Share LoL TV via.."));
+			// startActivity(sendIntent);
 			break;
-			
+
 		case 15:
 			// Rate Dota2TV
-		    Intent rateIntent = new Intent(Intent.ACTION_VIEW);
-		    //Try Google play
-		    rateIntent.setData(Uri.parse("market://details?id=com.wwyz.loltv"));
-		    if (tryStartActivity(rateIntent) == false) {
-		        //Market (Google play) app seems not installed, let's try to open a webbrowser
-		        rateIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.wwyz.loltv"));
-		        if (tryStartActivity(rateIntent) == false) {
-		            //Well if this also fails, we have run out of options, inform the user.
-		            Toast.makeText(this, "Could not open Google Play, please install Google Play.", Toast.LENGTH_SHORT).show();
-		        }
-		    }
-			
+			Intent rateIntent = new Intent(Intent.ACTION_VIEW);
+			// Try Google play
+			rateIntent.setData(Uri.parse("market://details?id=com.wwyz.loltv"));
+			if (tryStartActivity(rateIntent) == false) {
+				// Market (Google play) app seems not installed, let's try to
+				// open a webbrowser
+				rateIntent
+						.setData(Uri
+								.parse("https://play.google.com/store/apps/details?id=com.wwyz.loltv"));
+				if (tryStartActivity(rateIntent) == false) {
+					// Well if this also fails, we have run out of options,
+					// inform the user.
+					Toast.makeText(
+							this,
+							"Could not open Google Play, please install Google Play.",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+
 			break;
 		}
-		
-
 
 		ft.commit();
 	}
@@ -343,71 +371,56 @@ public class SideMenuActivity extends SherlockFragmentActivity {
 		fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 
-	// Handles exit
-	@Override
-	public void onBackPressed() {
-		
-		boolean skipBack = false;
-		
-		if (currentItem == 3){
-			skipBack = ((Forum_fragment)currentFragment).backWebView();
-		}
-		
-		if (!skipBack){
-		if (fm.getBackStackEntryCount() == 0) {
-
-			// No fragment in back stack
-			
-			if (doubleBackToExitPressedOnce) {
-				super.onBackPressed();
-				return;
-			}
-			this.doubleBackToExitPressedOnce = true;
-			Toast.makeText(this, "Please click BACK again to exit",
-					Toast.LENGTH_SHORT).show();
-
-			// reset doubleBackToExitPressedOnce to false after 2 seconds
-			new Handler().postDelayed(new Runnable() {
-
-				@Override
-				public void run() {
-					doubleBackToExitPressedOnce = false;
-
-				}
-			}, 2000);
-		} else {
-
-			// Fragment back stack is empty
-
-			super.onBackPressed();
-		}
-		}
-		
-	}
-	
-		
-	public void setDrawerIndicator(int position){
+	public void setDrawerIndicator(int position) {
 		for (Item i : items)
 			i.setUnchecked();
 		items.get(position).setChecked();
 		eAdapter.notifyDataSetChanged();
 	}
-	
+
 	private boolean tryStartActivity(Intent aIntent) {
-	    try
-	    {
-	        startActivity(aIntent);
-	        return true;
-	    }
-	    catch (ActivityNotFoundException e)
-	    {
-	        return false;
-	    }
+		try {
+			startActivity(aIntent);
+			return true;
+		} catch (ActivityNotFoundException e) {
+			return false;
+		}
 	}
-	
-	public void setCurrentFragment(Fragment fragment){
+
+	public void setCurrentFragment(Fragment fragment) {
 		currentFragment = fragment;
 	}
-	 
+
+	@Override
+	public void onDismissScreen(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onLeaveApplication(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPresentScreen(Ad arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onReceiveAd(Ad ad) {
+		// TODO Auto-generated method stub
+		if (ad == interstitial) {
+			interstitial.show();
+		}
+	}
 
 }

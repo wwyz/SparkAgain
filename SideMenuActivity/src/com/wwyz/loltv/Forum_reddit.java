@@ -1,6 +1,5 @@
 package com.wwyz.loltv;
 
-import com.wwyz.loltv.feedManager.FeedManager_Subscription;
 
 
 public class Forum_reddit extends Forum_fragment {

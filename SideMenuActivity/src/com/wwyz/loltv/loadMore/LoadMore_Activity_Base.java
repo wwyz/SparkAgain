@@ -249,7 +249,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 
 		Intent i = new Intent(this, YoutubeActionBarActivity.class);
-		i.putExtra("video", videolist.get(position - 1));
+		i.putExtra("video", videolist.get(position));
 		startActivity(i);
 
 	}

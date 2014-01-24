@@ -202,7 +202,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		myLoadMoreListView = (LoadMoreListView) this.getListView();
 		myLoadMoreListView.setDivider(null);
 
-		setBannerInHeader();
+//		setBannerInHeader();
 
 		vaa = new VideoArrayAdapter(sfa, titles, videolist, imageLoader);
 		setListAdapter(vaa);

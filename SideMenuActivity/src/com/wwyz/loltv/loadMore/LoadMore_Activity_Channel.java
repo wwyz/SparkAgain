@@ -24,6 +24,7 @@ public class LoadMore_Activity_Channel extends LoadMore_Activity_Base implements
 
 	@Override
 	public void Initializing() {
+		ab.setTitle("Channel");
 		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
 		final String[] catagory = { "Recent", "Playlists" };
@@ -47,7 +48,7 @@ public class LoadMore_Activity_Channel extends LoadMore_Activity_Base implements
 		case 0:
 			// In "Recent"
 			Intent i = new Intent(this, YoutubeActionBarActivity.class);
-			i.putExtra("video", videolist.get(position - 1));
+			i.putExtra("video", videolist.get(position-1));
 			startActivity(i);
 			break;
 
@@ -55,11 +56,11 @@ public class LoadMore_Activity_Channel extends LoadMore_Activity_Base implements
 			// In "Playlists"
 			Intent i1 = new Intent(this, LoadMore_Activity_Base.class);
 
-			i1.putExtra("API", videolist.get(position - 1).getRecentVideoUrl());
-			i1.putExtra("PLAYLIST_API", videolist.get(position - 1)
+			i1.putExtra("API", videolist.get(position-1).getRecentVideoUrl());
+			i1.putExtra("PLAYLIST_API", videolist.get(position-1)
 					.getPlaylistsUrl());
-			i1.putExtra("title", videolist.get(position - 1).getTitle());
-			i1.putExtra("thumbnail", videolist.get(position - 1)
+			i1.putExtra("title", videolist.get(position-1).getTitle());
+			i1.putExtra("thumbnail", videolist.get(position-1)
 					.getThumbnailUrl());
 			startActivity(i1);
 			break;

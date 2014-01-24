@@ -1,55 +1,32 @@
 package com.wwyz.loltv;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONException;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.AsyncTask.Status;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.webkit.WebSettings.PluginState;
+import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.costum.android.widget.LoadMoreListView;
-import com.costum.android.widget.LoadMoreListView.OnLoadMoreListener;
 import com.google.ads.AdView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.wwyz.loltv.MyAsyncTask;
-import com.wwyz.loltv.R;
-import com.wwyz.loltv.YoutubeActionBarActivity;
-import com.wwyz.loltv.R.drawable;
-import com.wwyz.loltv.R.id;
-import com.wwyz.loltv.R.layout;
-import com.wwyz.loltv.TwitchPlayer.MyWebChromeClient;
-import com.wwyz.loltv.TwitchPlayer.MyWebViewClient;
 import com.wwyz.loltv.adapters.VideoArrayAdapter;
 import com.wwyz.loltv.data.Video;
 import com.wwyz.loltv.feedManager.FeedManager_Base;
