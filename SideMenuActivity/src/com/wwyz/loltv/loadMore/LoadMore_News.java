@@ -1,12 +1,10 @@
 package com.wwyz.loltv.loadMore;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
-//import org.json.JSONException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Build;
 import android.os.Handler;
-//import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
@@ -35,7 +32,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -48,7 +44,6 @@ import com.wwyz.loltv.MyAsyncTask;
 import com.wwyz.loltv.R;
 import com.wwyz.loltv.SideMenuActivity;
 import com.wwyz.loltv.adapters.VideoArrayAdapter;
-import com.wwyz.loltv.data.Match;
 import com.wwyz.loltv.feedManager.FeedManager_Subscription;
 
 @SuppressLint("HandlerLeak")
@@ -73,7 +68,7 @@ public class LoadMore_News extends LoadMore_Base implements
 	private View pagerRetry;
 	private View listLoading;
 	private View listRetry;
-	private String url = "http://www.in2lol.com/en/matches/";
+	private String url = "http://www.gosugamers.net/lol/gosubet";
 	private int rand_1;
 	private int rand_2;
 	private AdvAdapter myAdvAdapter;
@@ -264,7 +259,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		liveTitle.setText("Upcoming Matches");
 
 		if (matcharray.length >= 1) {
-			if (matcharray[0].endsWith("Live")) {
+			if (matcharray[0].toLowerCase().endsWith("live")) {
 				liveMatch1.setText(matcharray[0].substring(0,
 						matcharray[0].length() - 4));
 			} else {
@@ -278,7 +273,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		// System.out.println(matcharray[0]);
 
 		if (matcharray.length >= 2) {
-			if (matcharray[1].endsWith("Live")) {
+			if (matcharray[1].toLowerCase().endsWith("live")) {
 				liveMatch2.setText(matcharray[1].substring(0,
 						matcharray[1].length() - 4));
 			} else {
@@ -291,7 +286,7 @@ public class LoadMore_News extends LoadMore_Base implements
 		}
 
 		if (matcharray.length >= 3) {
-			if (matcharray[2].endsWith("Live")) {
+			if (matcharray[2].toLowerCase().endsWith("live")) {
 				liveMatch3.setText(matcharray[2].substring(0,
 						matcharray[2].length() - 4));
 			} else {
@@ -426,23 +421,6 @@ public class LoadMore_News extends LoadMore_Base implements
 			});
 
 			handler.postDelayed(runnable, 10000);
-
-			// myThread = new Thread(new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			// while (true) {
-			// if (myThread.isInterrupted()) break;
-			// if (isContinue) {
-			// viewHandler.sendEmptyMessage(what.get());
-			// whatOption();
-			// }
-			// }
-			// }
-			// });
-			//
-			// myThread.start();
-
 			isPagerSet = true;
 		}
 
@@ -472,28 +450,6 @@ public class LoadMore_News extends LoadMore_Base implements
 			handler.postDelayed(runnable, 10000);
 		}
 	};
-
-	// private void whatOption() {
-	// what.incrementAndGet();
-	// if (what.get() > imageViews.length - 1) {
-	// what.getAndAdd(-4);
-	// }
-	// try {
-	// Thread.sleep(5000);
-	// } catch (InterruptedException e) {
-	//
-	// }
-	// }
-	//
-	// private final Handler viewHandler = new Handler() {
-	//
-	// @Override
-	// public void handleMessage(Message msg) {
-	// advPager.setCurrentItem(msg.what);
-	// super.handleMessage(msg);
-	// }
-	//
-	// };
 
 	private final class GuidePageChangeListener implements OnPageChangeListener {
 
@@ -609,7 +565,7 @@ public class LoadMore_News extends LoadMore_Base implements
 			if (!taskCancel && responseString != null) {
 
 				try {
-					pullMatch(responseString);
+					pull(responseString);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -619,68 +575,42 @@ public class LoadMore_News extends LoadMore_Base implements
 			return responseString;
 		}
 
-		private void pullMatch(String responseString) {
-
+		private void pull(String responseString) {
 			Document doc = Jsoup.parse(responseString);
-			// links = doc.select("tr:has(td.opp)");
-			// if (!links.isEmpty()) {
-			//
-			// for (Element link : links) {
-			//
-			// String match;
-			//
-			// match = link.select("span").first().text().trim() + " vs "
-			// + link.select("span").get(2).text().trim() + " ";
-			// if (link.getElementsByClass("results").isEmpty()) {
-			// match += link.select("td").get(3).text().trim();
-			// matches.add(match);
-			// } else {
-			// match += link.select("span.hidden").first().text()
-			// .trim();
-			// results.add(match);
-			// }
-			// }
-			//
-			// } else {
-			// handleCancelView();
-			// }
-			Element box = null;
-			box = doc.select("div.main").get(0);
+			links = doc.select("tr:has(span.opp)");
+			if (!links.isEmpty()) {
 
-			// System.out.println(box.toString());
-
-			if (box != null) {
-
-				isMoreVideos = false;
-
-				links = box.select("a.item");
-
-				//
 				for (Element link : links) {
 
-					// System.out.println(link.toString());
-					//
-					// Match newMatch = new Match();
+					String match;
 
-					String match = link.select("span").get(0).text().trim()
-							+ " " + link.select("span").get(1).text().trim()
-							+ " " + link.select("span").get(2).text().trim()
-							+ " " + link.select("span").get(3).text().trim();
+					match = link.select("span.opp").first().text().trim()
+							+ " vs "
+							+ link.select("span.opp").get(1).text().trim()
+							+ " ";
+					if (link.select("span.hidden").isEmpty()) {
+						if (link.select("td").get(1).text().trim()
+								.toLowerCase().matches("live")
+								|| link.select("td").get(1).text().trim()
+										.matches("")) {
+							// Game is live, append "live" text to it
+							match += "Live";
+						} else {
+							// Game is not live
+							match += link.select("td").get(1).text().trim();
+						}
 
-					//
-					if (link.select("span").get(3).text().trim()
-							.matches("[0-9]:[0-9]")) {
-						results.add(match);
-					} else {
 						matches.add(match);
+					} else {
+						match += link.select("span.hidden").first().text()
+								.trim();
+						results.add(match);
 					}
 				}
-				//
 
+			} else {
+				handleCancelView();
 			}
-
-			Collections.reverse(matches);
-
 		}
 
 		@Override
@@ -705,67 +635,6 @@ public class LoadMore_News extends LoadMore_Base implements
 
 	}
 
-	// class LoadMoreTask_News extends LoadMoreTask {
-	//
-	// public LoadMoreTask_News(int type, View contentView, View loadingView,
-	// View retryView) {
-	// super(type, contentView, loadingView, retryView);
-	// // TODO Auto-generated constructor stub
-	// }
-	//
-	// @Override
-	// protected void onPostExecute(String result) {
-	// // Do anything with response..
-	// // System.out.println(result);
-	// //Log.d("AsyncDebug", "Into onPostExecute!");
-	//
-	// if (!taskCancel && result != null) {
-	//
-	// feedManager.setmJSON(result);
-	//
-	// List<Video> newVideos = feedManager.getVideoPlaylist();
-	//
-	// // adding new loaded videos to our current video list
-	// for (Video v : newVideos) {
-	// //System.out.println("new id: " + v.getVideoId());
-	// if (needFilter) {
-	// filtering(v);
-	// // System.out.println("need filter!");
-	// } else {
-	// titles.add(v.getTitle());
-	// videolist.add(v);
-	// }
-	// }
-	// try {
-	// // put the next API in the first place of the array
-	// API.add(feedManager.getNextApi());
-	// // nextAPI = feedManager.getNextApi();
-	// if (API.get(API.size()-1) == null) {
-	// // No more videos left
-	// isMoreVideos = false;
-	// }
-	// } catch (JSONException e) {
-	// // TODO Auto-generated catch block
-	// //e.printStackTrace();
-	// }
-	// vaa.notifyDataSetChanged();
-	//
-	// ((LoadMoreListView) myLoadMoreListView).onLoadMoreComplete();
-	//
-	// DisplayView(contentView, retryView, loadingView);
-	//
-	// if (!isMoreVideos) {
-	// ((LoadMoreListView) myLoadMoreListView).onNoMoreItems();
-	//
-	// myLoadMoreListView.setOnLoadMoreListener(null);
-	// }
-	//
-	// } else {
-	// handleCancelView();
-	// }
-	// }
-	//
-	// }
 
 	@Override
 	protected void doRequest() {
