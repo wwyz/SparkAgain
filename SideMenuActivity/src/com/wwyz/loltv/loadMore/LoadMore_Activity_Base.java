@@ -387,7 +387,7 @@ public class LoadMore_Activity_Base extends SherlockListActivity {
 
 		// check the state of the task
 		cancelAllTask();
-		hideAllViews();
+//		hideAllViews();
 
 	}
 
