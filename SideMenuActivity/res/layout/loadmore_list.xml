@@ -7,7 +7,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/mVideoFrame" 
-    android:layout_above="@+id/mAdFrame"
+    
     android:layout_alignParentTop="true">
 
     <!-- We have to indicate that the listview is now a LoadMoreListView -->
@@ -33,13 +33,13 @@
         android:visibility="gone" >
     </include>
     </FrameLayout>
-    <FrameLayout 
+   <!-- <FrameLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mAdFrame"
         android:layout_alignParentBottom="true">
         
-        <com.google.ads.AdView
+         <com.google.ads.AdView
         android:id="@+id/ad"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -47,9 +47,9 @@
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-6718707824713684/2974027451"
         ads:loadAdOnCreate="true"
-        ads:testDevices="5E4CA696BEB736E734DD974DD296F11A" />
+        ads:testDevices="5E4CA696BEB736E734DD974DD296F11A" /> 
         
-    </FrameLayout>
+    </FrameLayout>-->
 
 
 

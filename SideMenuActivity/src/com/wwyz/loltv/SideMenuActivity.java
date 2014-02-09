@@ -1,6 +1,7 @@
 package com.wwyz.loltv;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -70,7 +71,7 @@ public class SideMenuActivity extends SherlockFragmentActivity implements
 
 		// Create ad request
 		AdRequest adRequest = new AdRequest();
-		adRequest.addTestDevice("5E4CA696BEB736E734DD974DD296F11A");
+//		adRequest.addTestDevice("5E4CA696BEB736E734DD974DD296F11A");
 		// Begin loading your interstitial
 		interstitial.loadAd(adRequest);
 
@@ -417,9 +418,11 @@ public class SideMenuActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void onReceiveAd(Ad ad) {
-		// TODO Auto-generated method stub
-		if (ad == interstitial) {
-			interstitial.show();
+		Random rand = new Random();
+		if (rand.nextInt(10) > 4) {
+			if (ad == interstitial) {
+				interstitial.show();
+			}
 		}
 	}
 
